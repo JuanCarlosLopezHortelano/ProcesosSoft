@@ -1,10 +1,6 @@
 function Sistema() {
     this.usuarios = {};
 
-    this.usuarioActivo = function(nick) {
-        return this.usuarios.hasOwnProperty(nick);
-    }
-    
     this.agregarUsuario = function(nick) {
         if (!this.usuarioActivo(nick)) {
             this.usuarios[nick] = new Usuario(nick);
@@ -18,7 +14,9 @@ function Sistema() {
         return this.usuarios;
     }
 
-   
+    this.usuarioActivo = function(nick) {
+        return this.usuarios.hasOwnProperty(nick);
+    }
 
     this.eliminarUsuario = function(nick) {
         if (this.usuarioActivo(nick)) {
