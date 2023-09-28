@@ -1,6 +1,3 @@
-
-
-
 function Sistema() {
     this.usuarios = {};
 
