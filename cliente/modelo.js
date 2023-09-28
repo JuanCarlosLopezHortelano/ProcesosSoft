@@ -18,8 +18,6 @@ function Sistema() {
         return this.usuarios;
     }
 
-   
-
     this.eliminarUsuario = function(nick) {
         if (this.usuarioActivo(nick)) {
             delete this.usuarios[nick];
