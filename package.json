@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "node index.js",
+=======
+>>>>>>> 9a3d8b245791d29de4a45fe2439bede5cbb50265
     "testW": "node_modules\\.bin\\jasmine-node servidor",
     "test": "./node_modules/.bin/jasmine-node servidor"
   },
