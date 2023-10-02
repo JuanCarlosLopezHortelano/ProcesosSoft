@@ -2,17 +2,21 @@ function Sistema() {
     this.usuarios = {};
 
     this.usuarioActivo = function(nick) {
-        return this.usuarios.hasOwnProperty(nick);
+        const resultado = { "Activo": this.usuarios.hasOwnProperty(nick) };
+        return resultado ;
     }
     
-    this.agregarUsuario = function(nick) {
-        if (!this.usuarioActivo(nick)) {
-            this.usuarios[nick] = new Usuario(nick);
-            console.log(`Usuario "${nick}" creado.`);
-        } else {
-            console.log(`Usuario "${nick}" ya Existe.`);
+    this.agregarUsuario=function(nick){
+        let res={"nick":-1};
+        if (!this.usuarios[nick]){
+        this.usuarios[nick]=new Usuario(nick);
+        res.nick=nick;
         }
-    }
+        else{
+        console.log("el nick "+nick+" está en uso");
+        }
+        return res;}
+
 
     this.obtenerUsuarios = function() {
         return this.usuarios;
@@ -28,7 +32,8 @@ function Sistema() {
     }
     this.numeroUsuarios = function() {
         // Contar el número de usuarios (claves) en el objeto usuarios
-        return Object.keys(this.usuarios).length;
+        let res = {"num":Object.keys(this.usuarios).length};
+        return res;
     }
 
    
