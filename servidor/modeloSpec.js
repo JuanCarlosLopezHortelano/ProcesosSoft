@@ -15,13 +15,13 @@ describe('El sistema', function() {
     });
   
    it('inicialmente no hay usuarios', function() {
-  expect(sistema.numeroUsuarios()).toBe(0);
+  expect(sistema.numeroUsuarios()).toEqual({ num : 0 });
   });
 
   it('debería agregar un usuario correctamente', function() {
-   expect(sistema.numeroUsuarios()).toEqual(0); 
+   expect(sistema.numeroUsuarios()).toEqual({ num : 0 }); 
    sistema.agregarUsuario("pepe");
-   expect(sistema.numeroUsuarios()).toEqual(1);
+   expect(sistema.numeroUsuarios()).toEqual({ num : 1 });
 });
 
  // Prueba la función eliminarUsuario
@@ -35,7 +35,7 @@ describe('El sistema', function() {
 it('debería devolver el número correcto de usuarios', function() {
    sistema.agregarUsuario("usuario5");
    sistema.agregarUsuario("usuario6");
-   expect(sistema.numeroUsuarios()).toEqual(2);
+   expect(sistema.numeroUsuarios()).toEqual({ num : 2 });
 });
 
 
