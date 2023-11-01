@@ -12,6 +12,16 @@ function ControlWeb() {
             rest.agregarUsuario(nick);
         });
     }
+     
+    this.comprobarSesion=function(){
+        let nick=localStorage.getItem("nick");
+        if (nick){
+        cw.mostrarMensaje("Bienvenido al sistema, "+nick);
+        }
+        else{
+        cw.mostrarAgregarUsuario();
+        }
+        }
 
     this.mostrarObtenerUsuarios = function () {
         let cadena = '<div class="form-group" id="mOU">';
