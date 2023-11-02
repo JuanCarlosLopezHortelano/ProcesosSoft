@@ -1,38 +1,52 @@
 function ControlWeb() {
+
     this.mostrarAgregarUsuario = function () {
+        // Crear un formulario
         let cadena = '<div class="form-group" id="mAU">';
         cadena = cadena + '<label for="nick">Introduce el Nick:</label>';
         cadena = cadena + '<input type="text" id="nick" class="form-control" />';
         cadena = cadena + '<button id="btnAU" type="submit" class="btn btn-primary">Submit</button>';
         cadena = cadena + '</div>';
-
+        
+        // Agregar el formulario al elemento con el ID "au"
         $("#au").append(cadena);
+        
+        // Manejar el evento de clic del botón "Submit"
         $("#btnAU").on("click", function () {
             let nick = $("#nick").val();
-            rest.agregarUsuario(nick);
+            if(nick){
+                $("#mAU").remove();
+
+            rest.agregarUsuario(nick);}
         });
     }
      
-    this.comprobarSesion=function(){
-        let nick=localStorage.getItem("nick");
-        if (nick){
-        cw.mostrarMensaje("Bienvenido al sistema, "+nick);
+    
+    this.comprobarSesion = function () {
+        // Recupera el valor almacenado en LocalStorage con la clave "nick".
+        let nick = localStorage.getItem("nick");
+
+        // Verifica si se encontró un valor en LocalStorage.
+        if (nick) {
+           
+            cw.mostrarMensaje("Bienvenido al sistema, " + nick);
+        } else {
+            // Si no se encontró un valor, muestra un formulario para agregar un usuario.
+            cw.mostrarAgregarUsuario();
         }
-        else{
-        cw.mostrarAgregarUsuario();
-        }
-        }
+    }
 
     this.mostrarObtenerUsuarios = function () {
         let cadena = '<div class="form-group" id="mOU">';
         cadena = cadena + '<label for="nick">Usuarios: </label>';
-        cadena = cadena + '<button id="btnOU" type="button" class="btn btn-primary">Submit</button>';
+        cadena = cadena + '<button id="btnOU" type="button" class="btn btn-primary">ObtenerUsuarios</button>';
         cadena = cadena + '</div';
 
         $("#ou").append(cadena);
 
         $("#btnOU").on("click", function () {
             rest.obtenerUsuarios();
+            $("#mOU").remove();
         });
     }
 
@@ -46,6 +60,7 @@ function ControlWeb() {
 
         $("#btnNU").on("click", function () {
             rest.numeroUsuarios();
+            $("#mNU").remove();
         });
     }
 
@@ -81,14 +96,12 @@ function ControlWeb() {
         });
     }
 
-    this.mostrarMsg = function (msg) {
-        let existingMsg = $('#mMsg');
-        if (existingMsg.length) {
-            existingMsg.remove();
-        }
+    this.mostrarMsg=function(msg){
 
-        let cadena = '<h2 id="mMsg">' + msg + '</h2>';
+        $('#mMsg').remove()
+        let cadena='<h2 id="mMsg">'+msg+'</h2>';
         $('#msg').append(cadena);
+
     }
 }
 
