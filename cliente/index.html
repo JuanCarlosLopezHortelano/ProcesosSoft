@@ -54,7 +54,7 @@
     <div id="nu"></div>
     <div id="ua"></div>
     <div id="msg"></div>
-
+    <div id="Exit"></div>
     <div class="div">
         
         <script>
@@ -62,8 +62,9 @@
     cw = new ControlWeb();
     rest=new ClienteRest(cw);
     
-    cw.mostrarAgregarUsuario();
-   // cw.comprobarSesion();
+    //cw.mostrarAgregarUsuario();
+    cw.comprobarSesion();
+    cw.salir();
     </script>
        
     </div>

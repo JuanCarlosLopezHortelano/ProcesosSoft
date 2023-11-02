@@ -29,12 +29,33 @@ function ControlWeb() {
         // Verifica si se encontró un valor en LocalStorage.
         if (nick) {
            
-            cw.mostrarMensaje("Bienvenido al sistema, " + nick);
+            cw.mostrarMsg("Bienvenido al sistema, " + nick);
         } else {
             // Si no se encontró un valor, muestra un formulario para agregar un usuario.
             cw.mostrarAgregarUsuario();
         }
     }
+    
+    this.salir = function() {
+        // Boton de LogOut
+        let cadena = '<div class="form-group" id="mExit">';
+        
+        cadena = cadena + '<button id="btnExit" type="button" class="btn btn-primary">Cerrar Sesion</button>';
+        cadena = cadena + '</div';
+
+        $("#Exit").append(cadena);
+
+        $("#btnExit").on("click", function () {
+             // Mostrar un mensaje de confirmación al usuario
+            if (confirm("¿Estás seguro de que deseas salir?")) {
+                // Si el usuario confirma, eliminar "nick" del localStorage y recargar la página
+                localStorage.removeItem("nick");
+                location.reload();
+            }
+        });
+
+    }
+
 
     this.mostrarObtenerUsuarios = function () {
         let cadena = '<div class="form-group" id="mOU">';
