@@ -1,7 +1,9 @@
+const datos=require("./cad.js");
 function Sistema() {
     // Objeto que almacena a los usuarios
     this.usuarios = {};
 
+    this.cad=new datos.CAD();
     // Verifica si un usuario está activo
     this.usuarioActivo = function (nick) {
         let res = { "activo": -1 };
@@ -15,6 +17,10 @@ function Sistema() {
             return res;
         }
     }
+
+    this.cad.conectar(function(db){
+        console.log("Conectado a Mongo Atlas");
+        });
 
     // Agrega un usuario al sistema
     this.agregarUsuario = function (nick) {
