@@ -3,28 +3,34 @@ function ControlWeb() {
     this.mostrarAgregarUsuario = function () {
         // Crear un formulario
         let cadena = '<div class="form-group" id="mAU">';
+        cadena = cadena + '<div class="card"><div class="card-body">';
         cadena = cadena + '<label for="nick">Introduce el Nick:</label>';
         cadena = cadena + '<input type="text" id="nick" class="form-control" />';
         cadena = cadena + '<button id="btnAU" type="submit" class="btn btn-primary">Submit</button>';
-        cadena = cadena + '</div>';
+        cadena=cadena+'<div><a href="/auth/google"><img src="./cliente/img/web_light_rd_SI@1x.png" style="height:40px;"></a></div>';
+
         
+        cadena = cadena + '</div>';
+        cadena = cadena + '</div></div></div>'; 
+
         // Agregar el formulario al elemento con el ID "au"
         $("#au").append(cadena);
         
         // Manejar el evento de clic del botón "Submit"
         $("#btnAU").on("click", function () {
             let nick = $("#nick").val();
+            
             if(nick){
                 $("#mAU").remove();
 
-            rest.agregarUsuario(nick);}
+                rest.agregarUsuario(nick);}
         });
     }
      
     
     this.comprobarSesion = function () {
         // Recupera el valor almacenado en LocalStorage con la clave "nick".
-        let nick = localStorage.getItem("nick");
+        let nick = $.cookie("nick");
 
         // Verifica si se encontró un valor en LocalStorage.
         if (nick) {
@@ -49,7 +55,7 @@ function ControlWeb() {
              // Mostrar un mensaje de confirmación al usuario
             if (confirm("¿Estás seguro de que deseas salir?")) {
                 // Si el usuario confirma, eliminar "nick" del localStorage y recargar la página
-                localStorage.removeItem("nick");
+                $.removeCookie("nick");
                 location.reload();
             }
         });
