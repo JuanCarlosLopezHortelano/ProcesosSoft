@@ -58,6 +58,13 @@ function Sistema() {
         res.num = { "num": Object.keys(this.usuarios).length };
         return res;
     }
+
+    this.usuarioGoogle=function(usr,callback){
+        this.cad.buscarOCrearUsuario(usr,function(obj){
+        callback(obj);
+        });
+        }
+        
 }
 
 function Usuario(nick) {

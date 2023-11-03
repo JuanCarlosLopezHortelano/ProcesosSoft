@@ -23,13 +23,18 @@
     <!-- jquery-cookie -->
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+
+     <!-- GOOGLE -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
 
     <script src="cliente\clienteRest.js"></script>
     <script src="cliente\controlWeb.js"></script>
     
     
 </head>
-<body class="body" >
+<body class="body" onload="ini();">
 
     <nav class="navbar navbar-expand-sm"style="background-color: hsl(35, 66%, 87%);">
         <a class="navbar-brand" href="# " style="color: #fafafa; font-family: 'Playfair Display'; font-size: 36px; padding: 10px;">Procesos_JuanCarlos</a>
@@ -62,14 +67,12 @@
     <div class="div">
         
         <script>
-            
-    cw = new ControlWeb();
-    rest=new ClienteRest(cw);
-    
-    //cw.mostrarAgregarUsuario();
-    cw.comprobarSesion();
-    cw.salir();
-    </script>
+            function ini(){
+            cw=new ControlWeb();
+            rest=new ClienteRest();
+            cw.comprobarSesion();
+            };
+            </script>
        
     </div>
     
