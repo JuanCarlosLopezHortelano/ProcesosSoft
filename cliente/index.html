@@ -36,46 +36,40 @@
 </head>
 <body class="body" onload="ini();">
 
-    <nav class="navbar navbar-expand-sm"style="background-color: hsl(35, 66%, 87%);">
+    <nav class="navbar navbar-expand-sm" style="background-color: hsl(35, 66%, 87%);">
         <a class="navbar-brand" href="# " style="color: #fafafa; font-family: 'Playfair Display'; font-size: 36px; padding: 10px;">Procesos_JuanCarlos</a>
 
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item" >
-                <a class="nav-link"  href="#" style="color: #fafafa;" >Link 1</a>
+            <li class="nav-item">
+                <a class="nav-link" href="#" style="color: #fafafa;">Link 1</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#" style="color: #fafafa;">Link 2</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" style="color: #fafafa;">Link 3</a>
+                <a class="nav-link" href="login.html" style="color: #fafafa;">Iniciar Sesión</a>
             </li>
         </ul>
     </nav>
 
+    <div class="container">
+        <div class="container-fluid">
+            <h3>Sistema</h3>
+            <div id="au"></div>
+            <div id="registro"></div>
+            <div id="msg"></div>
+        </div>
+    </div>
 
-    <div class="container-fluid">
-        <h3>Logo_PROYECTO</h3>
-       
-    </div>
-    <div id="au"></div> 
-    <div id="eu"></div>
-    <div id="ou"></div>
-    <div id="nu"></div>
-    <div id="ua"></div>
-    <div id="msg"></div>
-    <div id="Exit"></div>
-    <div class="div">
-        
-        <script>
-            function ini(){
-            cw=new ControlWeb();
-            rest=new ClienteRest();
+  
+
+    <script>
+        function ini() {
+            cw = new ControlWeb();
+            rest = new ClienteRest();
             cw.comprobarSesion();
-            };
-            </script>
-       
-    </div>
-    
+        };
+    </script>
 
 </body>
 </html>

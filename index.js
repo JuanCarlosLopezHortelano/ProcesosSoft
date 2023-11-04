@@ -118,3 +118,8 @@ app.post('/enviarJwt',function(request,response){
   })
  });
  
+ app.post("/registrarUsuario",function(request,response){
+  sistema.registrarUsuario(request.body,function(res){
+  response.send({"nick":res.email});
+  });
+  });

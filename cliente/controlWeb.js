@@ -35,7 +35,7 @@ function ControlWeb() {
         cw.mostrarMsg("Bienvenido al sistema, "+nick);
         }
         else{
-        cw.mostrarAgregarUsuario();
+        cw.mostrarRegistro();
         cw.init();
         }
         }
@@ -177,5 +177,19 @@ function ControlWeb() {
         $('#msg').append(cadena);
 
     }
+
+    this.mostrarRegistro=function(){
+        $("#fmRegistro").remove();
+        $("#registro").load("./cliente/registro.html",function(){
+        $("#btnRegistro").on("click",function(){
+        let email=$("#email").val();
+        let pwd=$("#pwd").val();
+        if (email && pwd){
+        //rest.registrarUsuario(nick);
+        console.log(email+" "+pwd);
+        }
+        });
+        });
+        }
 }
 
