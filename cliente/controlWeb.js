@@ -32,7 +32,7 @@ function ControlWeb() {
         //let nick=localStorage.getItem("nick");
         let nick=$.cookie("nick");
         if (nick){
-        cw.mostrarMensaje("Bienvenido al sistema, "+nick);
+        cw.mostrarMsg("Bienvenido al sistema, "+nick);
         }
         else{
         cw.mostrarAgregarUsuario();
