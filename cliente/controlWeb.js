@@ -26,6 +26,13 @@ function ControlWeb() {
                 rest.agregarUsuario(nick);}
         });
     }
+    this.mostrarGoogle = function () {
+        // Crear un botón de Google para iniciar sesión
+        let botonGoogle = '<div class="text-center"><a href="/auth/google"><img src="./cliente/img/web_light_rd_SI@1x.png" style="height:40px;"></a></div>';
+    
+        // Agregar el botón de Google después del formulario de inicio de sesión
+        $("#google").append(botonGoogle);
+    }
      
     
     this.comprobarSesion=function(){
@@ -200,6 +207,7 @@ function ControlWeb() {
             } else if (formularioId === 'fmLogin') {
                 // Muestra el formulario de inicio de sesión
                 this.mostrarLogin()
+                this.mostrarGoogle() // para que permita loguearse con google
             } else {
                 // Mostrar un mensaje de error si el formulario no es válido
 

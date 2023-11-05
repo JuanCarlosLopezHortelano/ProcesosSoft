@@ -103,11 +103,32 @@ app.post("/registrarUsuario", function(request, response) {
     });
 });
 
-app.post('/loginUsuario', passport.authenticate("local", { failureRedirect: "/fallo", successRedirect: "/ok" }));
 
 app.get("/ok", function(request, response) {
     response.send({nick: request.user.email});
 });
+
+//app.post("/loginUsuario", passport.authenticate("local", { failureRedirect: "/fallo", successRedirect: "/ok" }));
+
+app.post("/loginUsuario", function(request, response) {
+    console.log("HAS LLEGADO HASTA AQUI")
+    sistema.loginUsuario(request.body, function(res) {
+
+        response.send({"nick": res.email});
+    });
+});
+
+
+app.get("/ok", function(request, response) {
+    response.send({ nick: request.user.email });
+});
+
+app.get("/fallo", function(request, response) {
+    response.send({ nick: "nook" });
+});
+
+
+
 app.get("/confirmarUsuario/:email/:key",function(request,response){
     let email=request.params.email;
     let key=request.params.key;
@@ -119,12 +140,28 @@ app.get("/confirmarUsuario/:email/:key",function(request,response){
     });
     })
     
+
+
+const haIniciado=function(request,response,next){
+            if (request.user){
+            next();
+            }
+            else{
+            response.redirect("/")
+            }
+            }        
+
+app.get("/obtenerUsuarios",haIniciado,function(request,response){
+                let lista=sistema.obtenerUsuarios();
+                response.send(lista);
+                });
+
+
 app.get("/cerrarSesion",haIniciado,function(request,response){
-        let nick=request.user.nick;
-        request.logout();
-        response.redirect("/");
-        if (nick){
-        sistema.eliminarUsuario(nick);
-        }
-        });
-        
+                    let nick=request.user.nick;
+                    request.logout();
+                    response.redirect("/");
+                    if (nick){
+                    sistema.eliminarUsuario(nick);
+                    }
+                    });

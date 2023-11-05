@@ -102,10 +102,11 @@ function ClienteRest() {
         }
 
 
+        
         this.loginUsuario = function(email, password) {
             $.ajax({
                 type: 'POST',
-                url: '/loginUsuario', 
+                url: '/registroUsuario', 
                 data: JSON.stringify({ "email": email, "password": password }),
                 success: function(data) {
                     if (data.nick !== -1) {

@@ -124,19 +124,18 @@ function Sistema() {
             }
             })
             }
-
-            this.loginUsuario=function(obj,callback){
-                this.cad.buscarUsuario({"email":obj.email,"confirmada":true},function(usr){
-                if(usr && usr.password==obj.password)
-                {
-                callback(usr);
-                }
-                else
-                {
-                callback({"email":-1});
-                }
+            this.loginUsuario = function (obj, callback) {
+                console.log("HAS INICIADO SESON")
+                this.cad.buscarUsuario({ "email": obj.email, "confirmada": true }, function (usr) {
+                  if (usr && usr.password === obj.password) {
+                    
+                    callback(usr);
+                  } else {
+                    callback({ "email": -1 });
+                  }
                 });
-                }    
+              };
+        
 
 }
 
