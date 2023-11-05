@@ -2,6 +2,7 @@ const mongo = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectId;
 
 function CAD() {
+
     this.usuarios;
 
     // Método para conectar a la base de datos
@@ -20,35 +21,29 @@ function CAD() {
     }
 
     // Función interna para buscar o crear un usuario en la colección
-    function buscarOCrear(coleccion, criterio, callback) {
-        coleccion.findOneAndUpdate(
-            criterio,
-            { $set: criterio },
-            {
-                upsert: true,
-                returnDocument: "after",
-                projection: { email: 1 }
-            },
-            function (err, doc) {
-                if (err) {
-                    throw err;
-                } else {
-                    console.log("Elemento actualizado");
-                    console.log(doc.value.email);
-                    callback({ email: doc.value.email });
-                }
-            }
-        );
-    }
+    this.buscarOCrearUsuario=function(usr,callback){
+         buscarOCrear(this.usuarios,usr,callback);
+        }
+
+        function buscarOCrear(coleccion,criterio,callback)
+        {
+            coleccion.findOneAndUpdate(criterio, {$set: criterio}, {upsert:
+            true,returnDocument:"after",projection:{email:1}}, function(err,doc) {
+            if (err) { throw err; }
+            else {
+               console.log("Elemento actualizado");
+               console.log(doc.value.email);
+               callback({email:doc.value.email});
+        }
+        });
+        }
+    
+
+    
 
     // Método para buscar un usuario
     this.buscarUsuario = function (obj, callback) {
         buscar(this.usuarios, obj, callback);
-    }
-
-    // Método para insertar un nuevo usuario
-    this.insertarUsuario = function (usuario, callback) {
-        insertar(this.usuarios, usuario, callback);
     }
 
     // Función interna para buscar un usuario en la colección
@@ -61,6 +56,13 @@ function CAD() {
             }
         });
     }
+
+    // Método para insertar un nuevo usuario
+    this.insertarUsuario = function (usuario, callback) {
+        insertar(this.usuarios, usuario, callback);
+    }
+
+    
 
     // Función interna para insertar un elemento en la colección
     function insertar(coleccion, elemento, callback) {
@@ -91,7 +93,7 @@ function CAD() {
                 }
                 });
                 }    
-}
 
+}
 // Exportamos el objeto CAD para su uso en otras partes de la aplicación
 module.exports.CAD = CAD;

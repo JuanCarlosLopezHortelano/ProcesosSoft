@@ -5,15 +5,16 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+
 // Importa el módulo 'passport' para la autenticación en Node.js.
 const passport = require("passport");
-
+const LocalStrategy = require('passport-local').Strategy;
 // Importa el módulo 'cookie-session' para gestionar las sesiones de cookies.
 const cookieSession = require("cookie-session");
 
 // Requiere un archivo local "./servidor/passport-setup.js" que contiene la configuración de Passport.
 require("./servidor/passport-setup.js");
-const LocalStrategy = require('passport-local').Strategy;
+
 const modelo = require("./servidor/modelo.js");
 const PORT = process.env.PORT || 3000;
 
@@ -76,13 +77,17 @@ app.get('/google/callback',
         res.redirect('/good');
     });
 
-app.get("/good", function(request, response) {
-    let email = request.user.emails[0].value;
-    sistema.usuarioGoogle({"email": email}, function(obj) {
-        response.cookie('nick', obj.email);
+    app.get("/good", function(request,response){
+        let email=request.user.emails[0].value;
+        sistema.usuarioGoogle({"email":email},function(obj){
+        response.cookie('nick',obj.email);
         response.redirect('/');
-    });
-});
+        });
+        });
+    
+      
+
+
 
 app.get("/fallo", function(request, response) {
     response.send({nick: "nook"});
@@ -108,7 +113,7 @@ app.get("/ok", function(request, response) {
     response.send({nick: request.user.email});
 });
 
-//app.post("/loginUsuario", passport.authenticate("local", { failureRedirect: "/fallo", successRedirect: "/ok" }));
+app.post("/loginUsuario", passport.authenticate("local", { failureRedirect: "/fallo", successRedirect: "/ok" }));
 
 app.post("/loginUsuario", function(request, response) {
     console.log("HAS LLEGADO HASTA AQUI")

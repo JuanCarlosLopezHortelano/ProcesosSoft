@@ -23,7 +23,7 @@ function ControlWeb() {
             if(nick){
                 $("#mAU").remove();
 
-                rest.agregarUsuario(nick);}
+                rest.agregarUsuario2(nick);}
         });
     }
     this.mostrarGoogle = function () {
@@ -91,7 +91,12 @@ function ControlWeb() {
         });
 
     }
-
+    this.limpiar = function(){
+        $("#au").remove();
+        $("#registro").remove();
+        $("#google").remove();
+        $("#fmRegistro").remove();
+    }
 
     this.mostrarObtenerUsuarios = function () {
         let cadena = '<div class="form-group" id="mOU">';
@@ -162,18 +167,23 @@ function ControlWeb() {
     }
 
     this.mostrarRegistro=function(){
+        if ($.cookie('nick')){
+            return true;
+        };
         $("#fmRegistro").remove();
         $("#registro").load("./cliente/registro.html",function(){
-        $("#btnRegistro").on("click",function(){
-        let email=$("#email").val();
-        let pwd=$("#pwd").val();
-        if (email && pwd){
-             rest.registrarUsuario(email);
-        console.log(email+" "+pwd);
-        }
+            $("#btnRegistro").on("click",function(){
+                let email=$("#email").val();
+                let pwd=$("#pwd").val();
+                if (email && pwd){
+                    console.log("Email: " + email + " Password: " + pwd)
+                    rest.registrarUsuario(email,pwd);
+                    console.log(email+" "+pwd);
+                }
+            });
         });
-        });
-        }
+    }
+
     
 
         this.mostrarLogin = function() {
@@ -192,7 +202,7 @@ function ControlWeb() {
                     if (email && pwd) {
                         
                         console.log("Email: " + email + " Password: " + pwd);
-                        //rest.loginUsuario(email, pwd);
+                        rest.loginUsuario(email, pwd);
                     }
                 });
             });
@@ -207,7 +217,8 @@ function ControlWeb() {
             } else if (formularioId === 'fmLogin') {
                 // Muestra el formulario de inicio de sesión
                 this.mostrarLogin()
-                this.mostrarGoogle() // para que permita loguearse con google
+                 // Para que permita loguearse con google
+                this.mostrarGoogle() 
             } else {
                 // Mostrar un mensaje de error si el formulario no es válido
 

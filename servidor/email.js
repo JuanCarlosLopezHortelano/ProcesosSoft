@@ -9,15 +9,15 @@ const url = "http://localhost:3000/";
 const transporter = nodemailer.createTransport({
   service: 'gmail', // Servicio de correo a utilizar (en este caso, Gmail)
   auth: {
-    user: 'juancarlosl.h.01@gmail.com', // Tu dirección de correo electrónico
-    pass: 'ejfx lemy fovv spvg' // Tu contraseña o clave de aplicación generada en Gmail
+    user: 'juancarloslhhellin@gmail.com', // Tu dirección de correo electrónico
+    pass: 'tmil oyqh uszr wcon' // Tu contraseña o clave de aplicación generada en Gmail
   }
 });
 
 // Función para enviar un correo electrónico
 module.exports.enviarEmail = async function(direccion, key, mensaje) {
   const result = await transporter.sendMail({
-    from: 'juancarlosl.h.01@gmail.com', // Dirección de correo remitente
+    from: 'juancarloslhhellin@gmail.com', // Dirección de correo remitente
     to: direccion, // Dirección de correo destinatario
     subject: mensaje, // Asunto del correo
     text: 'Pulsa aquí para confirmar cuenta', // Texto del correo (opcional)

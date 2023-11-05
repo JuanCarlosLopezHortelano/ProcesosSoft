@@ -1,11 +1,14 @@
-const datos = require("./cad.js");
+const cad = require("./cad.js");
+const bcrypt = require('bcrypt');
+const correo=require("./email.js");
+
 
 function Sistema() {
     // Objeto que almacena a los usuarios
     this.usuarios = {};
 
     // Conexión a la base de datos
-    this.cad = new datos.CAD();
+    this.cad = new cad.CAD();
 
     // Verifica si un usuario está activo
     this.usuarioActivo = function (nick) {
@@ -57,57 +60,37 @@ function Sistema() {
             callback(obj);
         });
     }
-
-    // Registro de usuario
-    this.registrarUsuario = function (obj, callback) {
-        let modelo = this;
-        if (!obj.nick) {
-            obj.nick = obj.email;
-        }
-        this.cad.buscarUsuario(obj, function (usr) {
-            if (!usr) {
-                modelo.cad.insertarUsuario(obj, function (res) {
-                    callback(res);
-                });
-            } else {
-                callback({ "email": -1 });
-            }
-        });
-    }
-
-    // Inicio de sesión de usuario
-    this.loginUsuario = function (obj, callback) {
-        this.cad.buscarUsuario({ "email": obj.email, "confirmada": true }, function (usr) {
-            if (usr && usr.password === obj.password) {
-                callback(usr);
-            } else {
-                callback({ "email": -1 });
-            }
-        });
-    }
-
     this.registrarUsuario=function(obj,callback){
         let modelo=this;
         if (!obj.nick){
-        obj.nick=obj.email;
+            obj.nick=obj.email;
         }
+        console.log(obj.nick)
         this.cad.buscarUsuario(obj,function(usr){
-        if (!usr){
-        //el usuario no existe, luego lo puedo registrar
-        obj.key=Date.now().toString();
-        obj.confirmada=false;
-        modelo.cad.insertarUsuario(obj,function(res){
-        callback(res);
+            if (!usr){
+                //el usuario no existe, luego lo puedo registrar
+                obj.key=Date.now().toString();
+                obj.confirmada=false;
+                modelo.cad.insertarUsuario(obj,function(res){
+                    callback(res);
+                });
+                //correo.enviarEmail(obj.email,ob.key,"Confirmar cuenta");
+                correo.enviarEmail("juancarloslhhellin@gmail.com","hola","Confirmar cuenta");
+            }
+            else
+            {
+                callback({"email":-1});
+            }
         });
-        //correo.enviarEmail(obj.email,obj.key,"Confirmar cuenta");
-        correo.enviarEmail("juancarloslhhellin@gmail.com",obj.key,"Confirmar cuenta");
-        }
-        else
-        {
-        callback({"email":-1});
-        }
-        });
-        }
+        
+    }
+
+   
+    
+
+
+   
+        
 
         this.confirmarUsuario=function(obj,callback){
             let modelo=this;
@@ -124,17 +107,24 @@ function Sistema() {
             }
             })
             }
-            this.loginUsuario = function (obj, callback) {
-                console.log("HAS INICIADO SESON")
-                this.cad.buscarUsuario({ "email": obj.email, "confirmada": true }, function (usr) {
-                  if (usr && usr.password === obj.password) {
-                    
-                    callback(usr);
-                  } else {
-                    callback({ "email": -1 });
-                  }
+         
+
+            this.loginUsuario=function(obj,callback){
+                this.cad.buscarUsuario({"email":obj.email,"confirmada":true},function(usr){
+                    if(usr && usr.password==obj.password)
+                    {
+                        callback(usr);
+                    }
+                    else
+                    {
+                        callback({"email":-1});
+                    }
                 });
-              };
+            }
+        
+            
+
+              
         
 
 }
