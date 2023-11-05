@@ -44,7 +44,7 @@ function ControlWeb() {
         this.init = function() {
                 let cw = this;
                 google.accounts.id.initialize({
-                  client_id: "937465366567-m4lurf473go0f19ou1jrevj7n3oat164.apps.googleusercontent.com", //prod
+                  client_id: "937465366567-m4lurf473go0f19ou1jrevj7n3oat164.apps.googleusercontent.com", 
                   auto_select: false,
                   callback: cw.handleCredentialsResponse
                 });
@@ -61,33 +61,7 @@ function ControlWeb() {
                 }
                
     
-                this.enviarJwt=function(jwt){
-                    $.ajax({
-                    type:'POST',
-                    url:'/enviarJwt',
-                    data: JSON.stringify({"jwt":jwt}),
-                    success:function(data){
-                    let msg="El nick "+nick+" está ocupado";
-                    if (data.nick!=-1){
-                    console.log("Usuario "+data.nick+" ha sido registrado");
-                    msg="Bienvenido al sistema, "+data.nick;
-                    $.cookie("nick",data.nick);
-                    }
-                    else{
-                    console.log("El nick ya está ocupado");
-                    }
-                    cw.limpiar();
-                    cw.mostrarMensaje(msg);
-                    },
-                    error:function(xhr, textStatus, errorThrown){
-                    //console.log(JSON.parse(xhr.responseText));
-                    console.log("Status: " + textStatus);
-                    console.log("Error: " + errorThrown);
-                    },
-                    contentType:'application/json'
-                     //dataType:'json'
- });
-}
+             
 
     this.salir = function() {
         // Boton de LogOut
@@ -185,11 +159,55 @@ function ControlWeb() {
         let email=$("#email").val();
         let pwd=$("#pwd").val();
         if (email && pwd){
-        //rest.registrarUsuario(nick);
+             rest.registrarUsuario(email);
         console.log(email+" "+pwd);
         }
         });
         });
         }
+    
+
+        this.mostrarLogin = function() {
+            if ($.cookie('nick')) {
+                return true;
+            }
+            $("#fmRegistro").remove();
+            $("#registro").load("./cliente/login.html", function() {
+                // This code is executed after loading the login form.
+                 // Logging the message when the button is clicked.
+        
+                $("#btnLogin").on("click", function() {
+                    console.log("You have clicked the button.");
+                    let email = $("#usuarioLogin").val();
+                    let pwd = $("#pwdLogin").val();
+                    if (email && pwd) {
+                        
+                        console.log("Email: " + email + " Password: " + pwd);
+                        //rest.loginUsuario(email, pwd);
+                    }
+                });
+            });
+        }
+    
+
+        this.mostrarFormulario = function(formularioId) {
+           
+            if (formularioId === 'fmRegistro') {
+                // Muestra el formulario de registro
+                this.mostrarRegistro()
+            } else if (formularioId === 'fmLogin') {
+                // Muestra el formulario de inicio de sesión
+                this.mostrarLogin()
+            } else {
+                // Mostrar un mensaje de error si el formulario no es válido
+
+                console.log('Formulario no válido');
+            }
+        }
+   
+  
+   
+
+
 }
 

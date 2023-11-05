@@ -1,38 +1,35 @@
-const datos=require("./cad.js");
+const datos = require("./cad.js");
+
 function Sistema() {
     // Objeto que almacena a los usuarios
     this.usuarios = {};
 
-    this.cad=new datos.CAD();
+    // Conexión a la base de datos
+    this.cad = new datos.CAD();
+
     // Verifica si un usuario está activo
     this.usuarioActivo = function (nick) {
-        let res = { "activo": -1 };
         if (nick in this.usuarios) {
-            console.log("El nick " + nick + " está activo");
-            res.activo = true;
-            return res;
+            return { "activo": true };
         } else {
-            console.log("El nick " + nick + " no está activo");
-            res.activo = false;
-            return res;
+            return { "activo": false };
         }
     }
 
-    this.cad.conectar(function(db){
+    // Conectar a la base de datos
+    this.cad.conectar(function (db) {
         console.log("Conectado a Mongo Atlas");
-        });
+    });
 
     // Agrega un usuario al sistema
     this.agregarUsuario = function (nick) {
-        let res = { "nick": -1 };
         if (!this.usuarios[nick]) {
             this.usuarios[nick] = new Usuario(nick);
-            console.log("El usuario " + nick + " se ha añadido");
-            res.nick = nick;
+            return { "nick": nick };
         } else {
             console.log(nick + " está en uso");
+            return { "nick": -1 };
         }
-        return res;
     }
 
     // Obtiene la lista de usuarios
@@ -42,9 +39,7 @@ function Sistema() {
 
     // Elimina un usuario del sistema
     this.eliminarUsuario = function (nick) {
-        let res = { "nick": -1 };
         if (this.usuarioActivo(nick)) {
-            res.nick = nick;
             return "Usuario eliminado: " + nick;
         } else {
             return "No existe";
@@ -53,36 +48,96 @@ function Sistema() {
 
     // Obtiene el número de usuarios en el sistema
     this.numeroUsuarios = function () {
-        let res = { "num": -1 };
-        // Contar el número de usuarios (claves) en el objeto usuarios
-        res.num = { "num": Object.keys(this.usuarios).length };
-        return res;
+        return { "num": Object.keys(this.usuarios).length };
     }
 
-    this.usuarioGoogle=function(usr,callback){
-        this.cad.buscarOCrearUsuario(usr,function(obj){
-        callback(obj);
+    // Autenticación de usuario utilizando Google
+    this.usuarioGoogle = function (usr, callback) {
+        this.cad.buscarOCrearUsuario(usr, function (obj) {
+            callback(obj);
+        });
+    }
+
+    // Registro de usuario
+    this.registrarUsuario = function (obj, callback) {
+        let modelo = this;
+        if (!obj.nick) {
+            obj.nick = obj.email;
+        }
+        this.cad.buscarUsuario(obj, function (usr) {
+            if (!usr) {
+                modelo.cad.insertarUsuario(obj, function (res) {
+                    callback(res);
+                });
+            } else {
+                callback({ "email": -1 });
+            }
+        });
+    }
+
+    // Inicio de sesión de usuario
+    this.loginUsuario = function (obj, callback) {
+        this.cad.buscarUsuario({ "email": obj.email, "confirmada": true }, function (usr) {
+            if (usr && usr.password === obj.password) {
+                callback(usr);
+            } else {
+                callback({ "email": -1 });
+            }
+        });
+    }
+
+    this.registrarUsuario=function(obj,callback){
+        let modelo=this;
+        if (!obj.nick){
+        obj.nick=obj.email;
+        }
+        this.cad.buscarUsuario(obj,function(usr){
+        if (!usr){
+        //el usuario no existe, luego lo puedo registrar
+        obj.key=Date.now().toString();
+        obj.confirmada=false;
+        modelo.cad.insertarUsuario(obj,function(res){
+        callback(res);
+        });
+        //correo.enviarEmail(obj.email,obj.key,"Confirmar cuenta");
+        correo.enviarEmail("juancarloslhhellin@gmail.com",obj.key,"Confirmar cuenta");
+        }
+        else
+        {
+        callback({"email":-1});
+        }
         });
         }
 
-     this.registrarUsuario=function(obj,callback){
+        this.confirmarUsuario=function(obj,callback){
             let modelo=this;
-            if (!obj.nick){
-            obj.nick=obj.email;
-            }
-            this.cad.buscarUsuario(obj,function(usr){
-            if (!usr){
-            modelo.cad.insertarUsuario(obj,function(res){
-            callback(res);
-            });
+            this.cad.buscarUsuario({"email":obj.email,"confirmada":false,"key":obj.key},function(usr){
+            if (usr){
+            usr.confirmada=true;
+            modelo.cad.actualizarUsuario(usr,function(res){
+            callback({"email":res.email}); //callback(res)
+            })
             }
             else
             {
             callback({"email":-1});
             }
-            });
+            })
             }
-        
+
+            this.loginUsuario=function(obj,callback){
+                this.cad.buscarUsuario({"email":obj.email,"confirmada":true},function(usr){
+                if(usr && usr.password==obj.password)
+                {
+                callback(usr);
+                }
+                else
+                {
+                callback({"email":-1});
+                }
+                });
+                }    
+
 }
 
 function Usuario(nick) {

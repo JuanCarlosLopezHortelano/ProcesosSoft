@@ -38,21 +38,21 @@ function ClienteRest() {
     }
 
     this.obtenerUsuarios = function () {
-        var cli=this;
+        
         $.getJSON("/obtenerUsuarios/", function (data) {
             console.log(data);
         });
     };
 
     this.numeroUsuarios = function () {
-        var cli=this;
+        
         $.getJSON("/numeroUsuarios/", function (data) {
             console.log(data);
         });
     };
 
     this.eliminarUsuario = function (nick) {
-        var cli=this;
+        
         $.getJSON("/eliminarUsuario/" + nick, function (data) {
             if (data.nick !== -1) {
                 console.log("Usuario " + nick + " ha sido eliminado");
@@ -73,7 +73,8 @@ function ClienteRest() {
             }
         });
     };
-   
+
+  
 
     this.registrarUsuario=function(email,password){
         $.ajax({
@@ -83,10 +84,10 @@ function ClienteRest() {
         success:function(data){
         if (data.nick!=-1){
         console.log("Usuario "+data.nick+" ha sido registrado");
-        $.cookie("nick",data.nick);
+        //$.cookie("nick",data.nick);
         cw.limpiar();
-        cw.mostrarMensaje("Bienvenido al sistema,"+data.nick);
-        //cw.mostrarLogin();
+        cw.mostrarMsg("Bienvenido al sistema,"+data.nick);
+        cw.mostrarLogin();
         }
         else{
         console.log("El nick está ocupado");
@@ -101,5 +102,62 @@ function ClienteRest() {
         }
 
 
-}
+        this.loginUsuario = function(email, password) {
+            $.ajax({
+                type: 'POST',
+                url: '/loginUsuario', 
+                data: JSON.stringify({ "email": email, "password": password }),
+                success: function(data) {
+                    if (data.nick !== -1) {
+                        console.log("Inicio de sesión exitoso para " + data.nick);
+                        $.cookie("nick", data.nick);
+                        cw.limpiar();
+                        cw.mostrarMsg("Bienvenido de nuevo, " + data.nick);
+                        
+                    } else {
+                        console.log("Credenciales incorrectas o usuario no registrado");
+                    }
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.log("Status: " + textStatus);
+                    console.log("Error: " + errorThrown);
+                },
+                contentType: 'application/json'
+            });
+        }
+
+   this.enviarJwt=function(jwt){
+    $.ajax({
+        type:'POST',
+        url:'/enviarJwt',
+        data: JSON.stringify({"jwt":jwt}),
+
+        success:function(data){
+            let msg="El nick "+nick+" está ocupado";
+            if (data.nick!=-1){
+                console.log("Usuario "+data.nick+" ha sido registrado");
+                msg="Bienvenido al sistema, "+data.nick;
+                $.cookie("nick",data.nick);
+            }
+            else{
+                console.log("El nick ya está ocupado");
+            }
+            cw.limpiar();
+            cw.mostrarMsg(msg);
+        },
+        error:function(xhr, textStatus, errorThrown){
+            //console.log(JSON.parse(xhr.responseText));
+            console.log("Status: " + textStatus);
+            console.log("Error: " + errorThrown);
+        },
+        contentType:'application/json'
+    
+        //dataType:'json'
+    });
+    }
+
+        }
+
+
+
 
