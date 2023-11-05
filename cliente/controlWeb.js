@@ -27,9 +27,11 @@ function ControlWeb() {
         });
     }
     this.mostrarGoogle = function () {
+
+        
         // Crear un botón de Google para iniciar sesión
         let botonGoogle = '<div class="text-center"><a href="/auth/google"><img src="./cliente/img/web_light_rd_SI@1x.png" style="height:40px;"></a></div>';
-    
+        
         // Agregar el botón de Google después del formulario de inicio de sesión
         $("#google").append(botonGoogle);
     }
@@ -170,6 +172,8 @@ function ControlWeb() {
         if ($.cookie('nick')){
             return true;
         };
+        
+        
         $("#fmRegistro").remove();
         $("#registro").load("./cliente/registro.html",function(){
             $("#btnRegistro").on("click",function(){
@@ -190,7 +194,9 @@ function ControlWeb() {
             if ($.cookie('nick')) {
                 return true;
             }
+            
             $("#fmRegistro").remove();
+
             $("#registro").load("./cliente/login.html", function() {
                 // This code is executed after loading the login form.
                  // Logging the message when the button is clicked.
@@ -217,8 +223,9 @@ function ControlWeb() {
             } else if (formularioId === 'fmLogin') {
                 // Muestra el formulario de inicio de sesión
                 this.mostrarLogin()
+                
                  // Para que permita loguearse con google
-                this.mostrarGoogle() 
+                //this.mostrarGoogle() 
             } else {
                 // Mostrar un mensaje de error si el formulario no es válido
 
