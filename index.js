@@ -119,3 +119,12 @@ app.get("/confirmarUsuario/:email/:key",function(request,response){
     });
     })
     
+app.get("/cerrarSesion",haIniciado,function(request,response){
+        let nick=request.user.nick;
+        request.logout();
+        response.redirect("/");
+        if (nick){
+        sistema.eliminarUsuario(nick);
+        }
+        });
+        

@@ -78,6 +78,8 @@ function ControlWeb() {
                 // Si el usuario confirma, eliminar "nick" del localStorage y recargar la página
                 $.removeCookie("nick");
                 location.reload();
+                rest.cerrarSesion();
+
             }
         });
 

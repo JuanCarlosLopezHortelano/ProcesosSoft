@@ -126,6 +126,14 @@ function ClienteRest() {
             });
         }
 
+        this.cerrarSesion=function(){
+            $.getJSON("/cerrarSesion",function(){
+            console.log("Sesión cerrada");
+            $.removeCookie("nick");
+            });
+            }
+
+
    this.enviarJwt=function(jwt){
     $.ajax({
         type:'POST',
