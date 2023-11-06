@@ -2,8 +2,8 @@ const correo=require("./email.js");
 const nodemailer = require('nodemailer');
 
 // URL de tu aplicación, puede ser local o la URL de despliegue
-const url = "http://localhost:3000/";
-// const url = "tu-url-de-despliegue";
+//const url = "http://localhost:3000/";
+ const url = "https://procesossoft-yhkqrakm7q-ew.a.run.app/";
 
 // Configuración del transporte de correo
 const transporter = nodemailer.createTransport({
@@ -23,5 +23,5 @@ module.exports.enviarEmail=async function(direccion, key,men) {
       text: 'Pulsa aquí para confirmar cuenta',
       html: '<p>Bienvenido a Sistema</p><p><a href="'+url+'confirmarUsuario/'+direccion+'/'+key+'">Pulsa aquí para confirmar cuenta</a></p>'
   });
-console.log(JSON.stringify(result, null, 4));
+console.log(JSON.stringify(result, null, 4));
 }
