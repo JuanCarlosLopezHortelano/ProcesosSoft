@@ -165,7 +165,7 @@ function ControlWeb() {
         $('#mMsg').remove()
         let cadena='<h2 id="mMsg">'+msg+'</h2>';
         $('#msg').append(cadena);
-
+        this.salir();//ESTA MAL COLOCADO PERO DEBERIA SALIR AQUI
     }
 
     this.mostrarRegistro=function(){
