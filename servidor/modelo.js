@@ -117,29 +117,33 @@ function Sistema() {
          
 
            // Método para verificar la clave durante el inicio de sesión
-            this.loginUsuario = function (obj, callback) {
-                this.cad.buscarUsuario({ "email": obj.email, "confirmada": true }, function (usr) {
-                if (usr) {
-                    // Compara la clave cifrada almacenada en la base de datos con la clave proporcionada
-                    bcrypt.compare(obj.password, usr.password, function (err, result) {
-                    if (err) {
-                        console.error(err);
-                        return callback({ "error": "Error al comparar las claves" });
-                    }
-            
-                    if (result) {
-                        // La clave coincide, devuelve el usuario
-                        callback(usr);
-                    } else {
-                        // La clave no coincide
-                        callback({ "email": -1 });
-                    }
-                    });
-                } else {
+           this.loginUsuario = function (obj, callback) {
+
+            this.cad.buscarUsuario({ "email":obj.email, "confirmada":true }, function (usr) {
+              if (usr) {
+                // Compara la clave cifrada almacenada en la base de datos con la clave proporcionada
+
+                
+                bcrypt.compare(obj.password, usr.password, function (err, result) {
+                  if (err) {
+                    console.error(err);
+                    return callback({ "error": "Error al comparar las claves" });
+                  }
+          
+                  if (result) {
+                    console.log("Las contraseñas coinciden.");
+                    callback(usr);
+                  } else {
+                    console.log("Las contraseñas no coinciden.");
                     callback({ "email": -1 });
-                }
+                  }
                 });
-            }
+              } else {
+                callback({ "email": -1 });
+              }
+            });
+          }
+          
         
             
 
