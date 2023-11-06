@@ -20,12 +20,13 @@ passport.deserializeUser(function(user, done) {
 // Configura la estrategia de autenticación de Google OAuth2.
 passport.use(new GoogleStrategy({
   // Identificador de cliente (proporcionado por Google).
-  clientID: "937465366567-m4lurf473go0f19ou1jrevj7n3oat164.apps.googleusercontent.com",
-  
+  clientID: "937465366567-5qcj9vucp1pah0muucdkfkpsv2pe2ls5.apps.googleusercontent.com",
+  //clientID: "937465366567-m4lurf473go0f19ou1jrevj7n3oat164.apps.googleusercontent.com",
   // Clave secreta del cliente (proporcionada por Google).
-  clientSecret: "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",
-  
+  // clientSecret: "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",  //PRODUCCION
+  clientSecret: "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", 
   // URL de devolución de llamada a la que Google redirigirá después de la autenticación.
+  // callbackURL: "https://procesossoft-yhkqrakm7q-ew.a.run.app/google/callback"  //PRODUCCION
   callbackURL: "http://localhost:3000/google/callback"
 },
 function(accessToken, refreshToken, profile, done) {

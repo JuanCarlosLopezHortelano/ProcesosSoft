@@ -34,7 +34,7 @@ passport.use(new LocalStrategy({ usernameField: "email", passwordField: "passwor
       if (user.email != -1) {
         console.log("SSS")
         return done(null, user);
-      } else {
+      }  else {
         console.log("SS")
         return done(-1);
       }
