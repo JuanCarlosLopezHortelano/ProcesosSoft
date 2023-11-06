@@ -74,8 +74,8 @@ function Sistema() {
                 modelo.cad.insertarUsuario(obj,function(res){
                     callback(res);
                 });
-                //correo.enviarEmail(obj.email,ob.key,"Confirmar cuenta");
-                correo.enviarEmail("juancarloslhhellin@gmail.com","hola","Confirmar cuenta");
+                correo.enviarEmail(obj.email,obj.key,"Confirmar cuenta");
+                //correo.enviarEmail("juancarloslhhellin@gmail.com","hola","Confirmar cuenta");
             }
             else
             {
@@ -110,9 +110,12 @@ function Sistema() {
          
 
             this.loginUsuario=function(obj,callback){
+                
                 this.cad.buscarUsuario({"email":obj.email,"confirmada":true},function(usr){
+                   
                     if(usr && usr.password==obj.password)
                     {
+                        
                         callback(usr);
                     }
                     else

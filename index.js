@@ -27,6 +27,21 @@ app.use(cookieSession({
 
 // Inicializa Passport
 app.use(passport.initialize());
+
+passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password" },
+  function (email, password, done) {
+    sistema.loginUsuario({ "email": email, "password": password }, function (user) {
+      if (user.email != -1) {
+        console.log("SSS")
+        return done(null, user);
+      } else {
+        console.log("SS")
+        return done(-1);
+      }
+    })
+  }
+));
+
 app.use(passport.session());
 
 const sistema = new modelo.Sistema();
@@ -113,9 +128,24 @@ app.get("/ok", function(request, response) {
     response.send({nick: request.user.email});
 });
 
-app.post("/loginUsuario", passport.authenticate("local", { failureRedirect: "/fallo", successRedirect: "/ok" }));
+app.post("/loginUsuario", passport.authenticate("local", { 
+    failureRedirect: "/fallo", 
+    successRedirect: "/ok" }
+), function(req, res) {
+    // Esta función se ejecutará después de la autenticación
+    
+    console.log("Autenticación completada. Usuario autenticado:", req.user);
+    
+    // Puedes agregar más código aquí si lo necesitas
+    
+    res.send("Autenticación completada"); // O envía una respuesta al cliente
+});
 
-app.post("/loginUsuario", function(request, response) {
+    app.get("/ok", function(request, response) {
+        response.send({nick: request.user.email});
+    });
+
+/* app.post("/loginUsuario", function(request, response) {
     console.log("HAS LLEGADO HASTA AQUI")
     sistema.loginUsuario(request.body, function(res) {
 
@@ -131,7 +161,7 @@ app.get("/ok", function(request, response) {
 app.get("/fallo", function(request, response) {
     response.send({ nick: "nook" });
 });
-
+ */
 
 
 app.get("/confirmarUsuario/:email/:key",function(request,response){

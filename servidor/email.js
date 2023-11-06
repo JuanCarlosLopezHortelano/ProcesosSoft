@@ -15,14 +15,13 @@ const transporter = nodemailer.createTransport({
 });
 
 // Función para enviar un correo electrónico
-module.exports.enviarEmail = async function(direccion, key, mensaje) {
+module.exports.enviarEmail=async function(direccion, key,men) {
   const result = await transporter.sendMail({
-    from: 'juancarloslhhellin@gmail.com', // Dirección de correo remitente
-    to: direccion, // Dirección de correo destinatario
-    subject: mensaje, // Asunto del correo
-    text: 'Pulsa aquí para confirmar cuenta', // Texto del correo (opcional)
-    html: `<p>Bienvenido a Sistema</p>
-           <p><a href="${url}confirmarUsuario/${direccion}/${key}">Pulsa aquí para confirmar cuenta</a></p>`
-    // Mensaje HTML, donde `${url}` se reemplaza con la URL de confirmación.
+      from: 'juancarloslhhellin@gmail.com',
+      to: direccion,
+      subject: 'Confirmar cuenta',
+      text: 'Pulsa aquí para confirmar cuenta',
+      html: '<p>Bienvenido a Sistema</p><p><a href="'+url+'confirmarUsuario/'+direccion+'/'+key+'">Pulsa aquí para confirmar cuenta</a></p>'
   });
-};
+console.log(JSON.stringify(result, null, 4));
+}
