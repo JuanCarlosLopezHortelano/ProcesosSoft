@@ -35,6 +35,7 @@ passport.use(new LocalStrategy({ usernameField: "email", passwordField: "passwor
         console.log("SSS")
         return done(null, user);
       }  else {
+
         console.log("SS")
         return done(-1);
       }
@@ -85,6 +86,7 @@ app.listen(PORT, () => {
     console.log('Ctrl+C para salir');
 });
 
+
 app.get("/auth/google", passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 app.get('/google/callback',
@@ -92,7 +94,13 @@ app.get('/google/callback',
         res.redirect('/good');
     });
 
-    app.get("/good", function(request,response){
+    app.post('/oneTap/callback',
+    passport.authenticate('google-one-tap', { failureRedirect: '/fallo' }),
+    function(req, res) {
+     res.redirect('/good');
+});
+    
+app.get("/good", function(request,response){
         let email=request.user.emails[0].value;
         sistema.usuarioGoogle({"email":email},function(obj){
         response.cookie('nick',obj.email);
@@ -105,6 +113,7 @@ app.get('/google/callback',
 
 
 app.get("/fallo", function(request, response) {
+   
     response.send({nick: "nook"});
 });
 
@@ -112,20 +121,22 @@ app.post('/enviarJwt', function(request, response) {
     let jwt = request.body.jwt;
     let user = JSON.parse(atob(jwt.split(".")[1]));
     let email = user.email;
+
     sistema.usuarioGoogle({"email": email}, function(obj) {
         response.send({'nick': obj.email});
     });
 });
 
-app.post("/registrarUsuario", function(request, response) {
-    sistema.registrarUsuario(request.body, function(res) {
-        response.send({"nick": res.email});
+app.post("/registrarUsuario",function(request,response){
+    sistema.registrarUsuario(request.body,function(res){
+    response.send({"nick":res.email});
     });
-});
+    });
 
 
 app.get("/ok", function(request, response) {
-    response.send({nick: request.user.email});
+    
+    response.send({"nick": request.user.email});
 });
 
 app.post("/loginUsuario", passport.authenticate("local", { 
@@ -136,14 +147,12 @@ app.post("/loginUsuario", passport.authenticate("local", {
     
     console.log("Autenticación completada. Usuario autenticado:", req.user);
     
-    // Puedes agregar más código aquí si lo necesitas
     
-    res.send("Autenticación completada"); // O envía una respuesta al cliente
+    
+   
 });
 
-    app.get("/ok", function(request, response) {
-        response.send({nick: request.user.email});
-    });
+    
 
 /* app.post("/loginUsuario", function(request, response) {
     console.log("HAS LLEGADO HASTA AQUI")
@@ -200,3 +209,9 @@ app.get("/cerrarSesion",haIniciado,function(request,response){
                     sistema.eliminarUsuario(nick);
                     }
                     });
+
+                    app.post('/oneTap/callback',
+                    passport.authenticate('google-one-tap', { failureRedirect: '/fallo' }),
+                    function(req, res) {
+                     res.redirect('/good');
+                });

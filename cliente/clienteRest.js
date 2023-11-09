@@ -77,27 +77,33 @@ function ClienteRest() {
 
     // Registro de usuario
     this.registrarUsuario=function(email,password){
+        
 		$.ajax({
 		    type:'POST',
 		    url:'/registrarUsuario',
 		    data: JSON.stringify({"email":email,"password":password}),
-		    success:function(data){
-				if (data.nick!=-1){				
+		    success: function(data){
+
+				if (data.nick!==-1){				
 					console.log("Usuario "+data.nick+" ha sido registrado");
                     // mostrar un mensaje diciendo: consulta tu email
 					//$.cookie("nick",data.nick);
-					cw.limpiar();
-					cw.mostrarMensaje("Bienvenido al sistema, "+data.nick);
+					//cw.limpiar();
+                    console.log("POR111AQUII");
+					//cw.mostrarMensaje("Bienvenido al sistema, "+data.nick);
 					cw.mostrarLogin();
 				}
 				else{
 					console.log("El nick está ocupado");
-					cw.mostrarMensajeLogin("El nick está ocupado");
+                    cw.limpiar()
+                    cw.mostrarMensaje("PRUEBAA "+data.nick);
+					cw.mostrarMsg("El nick está ocupado");
 				}
 		     },
-			 error:function(xhr, textStatus, errorThrown){
-				console.log("Status: " + textStatus); 
-				console.log("Error: " + errorThrown); 
+            error: function (xhr, textStatus, errorThrown) {
+                console.log("Status: " + textStatus);
+                console.log("Error: " + errorThrown);
+                cw.mostrarMsg("ERROR");
 			 },
 		    contentType:'application/json'
 		});
@@ -120,7 +126,9 @@ function ClienteRest() {
                         cw.limpiar();
                         cw.mostrarMsg("Bienvenido de nuevo, " + data.nick);
                     } else {
+                        cw.limpiar()
                         console.log("Credenciales incorrectas o usuario no registrado");
+                        cw.mostrarMsg("Bienvenido de nuevo, " + data.nick);
                     }
                 },
                 error: function(xhr, textStatus, errorThrown) {

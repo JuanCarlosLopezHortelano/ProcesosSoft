@@ -78,15 +78,22 @@ function Sistema() {
       
           modelo.cad.buscarUsuario({"email":obj.email}, function (usr) {
             if (!usr) {
+             
+             
               // El usuario no existe, luego lo puedo registrar
               obj.key = Date.now().toString();
               obj.confirmada = false;
               modelo.cad.insertarUsuario(obj, function (res) {
+                
                 callback(res);
               });
               correo.enviarEmail(obj.email, obj.key, "Confirmar cuenta");
-            } else {
-              callback({ "email": -1 });
+              
+            }
+            else {
+              
+              console.log("El email ya esta ocupado")
+              callback({"email": -1});
             }
           });
         });
@@ -133,6 +140,7 @@ function Sistema() {
                   if (result) {
                     console.log("Las contraseñas coinciden.");
                     callback(usr);
+
                   } else {
                     console.log("Las contraseñas no coinciden.");
                     callback({ "email": -1 });

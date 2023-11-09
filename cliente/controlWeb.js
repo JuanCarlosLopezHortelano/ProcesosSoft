@@ -45,7 +45,7 @@ function ControlWeb() {
         }
         else{
         cw.mostrarRegistro();
-        cw.init();
+        // cw.init();
         }
         }
           
@@ -53,8 +53,8 @@ function ControlWeb() {
         this.init = function() {
                 let cw = this;
                 google.accounts.id.initialize({
-                  //client_id: "937465366567-5qcj9vucp1pah0muucdkfkpsv2pe2ls5.apps.googleusercontent.com", 
-                  client_id: "937465366567-m4lurf473go0f19ou1jrevj7n3oat164.apps.googleusercontent.com", 
+                  client_id: "937465366567-5qcj9vucp1pah0muucdkfkpsv2pe2ls5.apps.googleusercontent.com", 
+                  //client_id: "937465366567-m4lurf473go0f19ou1jrevj7n3oat164.apps.googleusercontent.com", 
                   auto_select: false,
                   callback: cw.handleCredentialsResponse
                 });
@@ -70,30 +70,41 @@ function ControlWeb() {
                 rest.enviarJwt(jwt);
                 }
                
-    
-             
-
-    this.salir = function() {
-        // Boton de LogOut
+    // Función para agregar el botón
+   this.agregarBotonExit = function() {
         let cadena = '<div class="form-group" id="mExit">';
-        
-        cadena = cadena + '<button id="btnExit" type="button" class="btn btn-primary">Cerrar Sesion</button>';
-        cadena = cadena + '</div';
-
+        cadena += '<button id="btnEx" type="button" class="btn btn-primary">Cerrar Sesion</button>';
+        cadena += '</div>';
         $("#Exit").append(cadena);
-
-        $("#btnExit").on("click", function () {
-             // Mostrar un mensaje de confirmación al usuario
+        $("#btnEx").on("click", function () {
+            // Mostrar un mensaje de confirmación al usuario
             if (confirm("¿Estás seguro de que deseas salir?")) {
                 // Si el usuario confirma, eliminar "nick" del localStorage y recargar la página
                 $.removeCookie("nick");
                 location.reload();
                 rest.cerrarSesion();
-
             }
         });
-
     }
+             
+
+    
+
+     $(document).ready(function () {
+        
+        $("#btnExit").on("click", function () {
+            // Mostrar un mensaje de confirmación al usuario
+            if (confirm("¿Estás seguro de que deseas salir?")) {
+                // Si el usuario confirma, eliminar "nick" del localStorage y recargar la página
+                $.removeCookie("nick");
+                location.reload();
+                rest.cerrarSesion();
+            }
+        });
+    });
+    
+
+
     this.limpiar = function(){
         $("#au").remove();
         $("#registro").remove();
@@ -166,7 +177,7 @@ function ControlWeb() {
         $('#mMsg').remove()
         let cadena='<h2 id="mMsg">'+msg+'</h2>';
         $('#msg').append(cadena);
-        this.salir();//ESTA MAL COLOCADO PERO DEBERIA SALIR AQUI
+        this.agregarBotonExit();
     }
 
     this.mostrarRegistro=function(){
@@ -183,7 +194,7 @@ function ControlWeb() {
                 if (email && pwd){
                     console.log("Email: " + email + " Password: " + pwd)
                     rest.registrarUsuario(email,pwd);
-                    console.log(email+" "+pwd);
+                    
                 }
             });
         });
@@ -202,8 +213,9 @@ function ControlWeb() {
                 // This code is executed after loading the login form.
                  // Logging the message when the button is clicked.
         
-                $("#btnLogin").on("click", function() {
-                    console.log("You have clicked the button.");
+                $("#btnLogin").on("click", function(event) {
+                    event.preventDefault();
+                 
                     let email = $("#usuarioLogin").val();
                     let pwd = $("#pwdLogin").val();
                     if (email && pwd) {
@@ -211,6 +223,8 @@ function ControlWeb() {
                         console.log("Email: " + email + " Password: " + pwd);
                         rest.loginUsuario(email, pwd);
                     }
+
+                    
                 });
             });
         }

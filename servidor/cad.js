@@ -71,6 +71,7 @@ function CAD() {
                 console.log("error");
             } else {
                 console.log("Nuevo elemento creado");
+              
                 callback(elemento);
             }
         });
