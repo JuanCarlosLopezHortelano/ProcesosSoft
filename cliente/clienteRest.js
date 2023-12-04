@@ -96,8 +96,13 @@ function ClienteRest() {
 				else{
 					console.log("El nick está ocupado");
                     cw.limpiar()
-                    cw.mostrarMensaje("PRUEBAA "+data.nick);
+                    cw.mostrarMsg("PRUEBAA "+data.nick);
 					cw.mostrarMsg("El nick está ocupado");
+                    
+                    console.log("Hay un usuario registrado con ese email");
+                    cw.mostrarMsg("Hay un usuario registrado con ese email");
+                    cw.mostrarModal("No se ha podido registrar el usuario");
+                        
 				}
 		     },
             error: function (xhr, textStatus, errorThrown) {

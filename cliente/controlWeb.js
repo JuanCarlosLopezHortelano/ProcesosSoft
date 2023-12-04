@@ -199,7 +199,16 @@ function ControlWeb() {
             });
         });
     }
-
+    this.mostrarModal=function(m){
+        $("#msg").remove();
+        let cadena="<div id='msg'>"+m+"</div>";
+        $('#mBody').append(cadena)
+       8
+        $('#miModal').modal();
+        // $('#btnModal').on('click',function(){
+        // })
+        }
+       
     
 
         this.mostrarLogin = function() {

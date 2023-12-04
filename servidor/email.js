@@ -1,17 +1,37 @@
-
+const gv = require('./gestorVariables.js');
 const nodemailer = require('nodemailer');
 
 // URL de tu aplicación, puede ser local o la URL de despliegue
 //const url = "http://localhost:3000/";
  const url = "https://procesossoft-yhkqrakm7q-ew.a.run.app/"; 
 
-// Configuración del transporte de correo
+
+let options = {
+  user: "juancarloslhhellin@gmail.com",
+  pass: "" // clave secreta
+}
+
+
+
+
+
+/*  // Configuración del transporte de correo
 const transporter = nodemailer.createTransport({
   service: 'gmail', // Servicio de correo a utilizar (en este caso, Gmail)
   auth: {
     user: 'juancarloslhhellin@gmail.com', // Tu dirección de correo electrónico
     pass: 'tmil oyqh uszr wcon' // Tu contraseña o clave de aplicación generada en Gmail
   }
+});  */
+
+let transporter;
+
+gv.obtenerOptions(function(res) {
+    options = res;
+    transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: options,
+    });
 });
 
 // Función para enviar un correo electrónico
@@ -25,3 +45,4 @@ module.exports.enviarEmail=async function(direccion, key,men) {
   });
 console.log(JSON.stringify(result, null, 4));
 }
+
