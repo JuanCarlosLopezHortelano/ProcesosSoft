@@ -1,5 +1,5 @@
-const gv = require('./gestorVariables.js');
 const nodemailer = require('nodemailer');
+const gv = require('./gestorVariables.js');
 
 // URL de tu aplicación, puede ser local o la URL de despliegue
 //const url = "http://localhost:3000/";
@@ -35,7 +35,7 @@ gv.obtenerOptions(function(res) {
 });
 
 // Función para enviar un correo electrónico
-module.exports.enviarEmail=async function(direccion, key,men) {
+module.exports.enviarEmail=async function(direccion, key, men) {
   const result = await transporter.sendMail({
       from: 'juancarloslhhellin@gmail.com',
       to: direccion,
@@ -45,4 +45,3 @@ module.exports.enviarEmail=async function(direccion, key,men) {
   });
 console.log(JSON.stringify(result, null, 4));
 }
-

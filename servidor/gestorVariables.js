@@ -9,7 +9,7 @@ const client = new SecretManagerServiceClient();
 
 // Función para acceder a la nueva clave secreta de correo electrónico
 async function accessCorreoElectronico() {
-    const nombre = 'projects/numeroproyecto/secrets/CORREO_ELECTRONICO/versions/1';
+    const nombre = 'projects/moonlit-text-402117/secrets/CORREO_GMAIL/versions/1';
     const [version] = await client.accessSecretVersion({
         name: nombre,
     });
@@ -19,7 +19,7 @@ async function accessCorreoElectronico() {
 
 // Función para acceder a la clave CLAVECORREO
 async function accessCLAVECORREO() {
-    const nombre = 'projects/numeroproyecto/secrets/CLAVECORREO/versions/1';
+    const nombre = 'projects/moonlit-text-402117/secrets/CLAVECORREO/versions/1';
     const [version] = await client.accessSecretVersion({
         name: nombre,
     });
@@ -27,11 +27,12 @@ async function accessCLAVECORREO() {
     return datos;
 }
 
-// Método obtenerOptions actualizado para incluir la llamada a accessCorreoElectronico
 module.exports.obtenerOptions = async function(callback) {
-    let options = { user: '', pass: '' };
-    options.user = await accessCorreoElectronico();
-    options.pass = await accessCLAVECORREO();
+    let options = { user: "", pass: "" };
+    let user = await accessCorreoGmail(); // Obtener el correo electrónico de autenticación de Gmail
+    let pass = await accessCLAVECORREO(); // Obtener la clave secreta
+    options.user = user; // Asignar el correo electrónico a options.user
+    options.pass = pass; // Asignar la clave secreta a options.pass
     callback(options);
-};
-           
+}
+    

@@ -1,5 +1,11 @@
 const fs = require("fs");
 const express = require('express');
+const httpServer = require('http').Server(app);
+const { Server } = require("socket.io");
+const moduloWS = require("./servidor/servidorWS.js");
+let ws = new moduloWS.ServidorWS();
+let io = new Server();
+
 const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,6 +23,14 @@ require("./servidor/passport-setup.js");
 
 const modelo = require("./servidor/modelo.js");
 const PORT = process.env.PORT || 3000;
+
+httpServer.listen(PORT, () => {
+    console.log(`App está escuchando en el puerto ${PORT}`);
+    console.log('Ctrl+C para salir');
+    });
+    io.listen(httpServer);
+    ws.lanzarServidor(io,sistema);
+    
 
 app.use(express.static(__dirname + "/"));
 
