@@ -35,7 +35,7 @@ function ControlWeb() {
         // Agregar el botón de Google después del formulario de inicio de sesión
         $("#google").append(botonGoogle);
     }
-     
+
     
     this.comprobarSesion=function(){
         //let nick=localStorage.getItem("nick");
@@ -48,19 +48,20 @@ function ControlWeb() {
         // cw.init();
         }
         }
-          
+
 
         this.init = function() {
                 let cw = this;
                 google.accounts.id.initialize({
-                  client_id: "937465366567-5qcj9vucp1pah0muucdkfkpsv2pe2ls5.apps.googleusercontent.com", 
-                  //client_id: "937465366567-m4lurf473go0f19ou1jrevj7n3oat164.apps.googleusercontent.com", 
-                  auto_select: false,
-                  callback: cw.handleCredentialsResponse
+                //PRODUCCIOn
+               // client_id: "937465366567-5qcj9vucp1pah0muucdkfkpsv2pe2ls5.apps.googleusercontent.com", 
+                client_id: "937465366567-m4lurf473go0f19ou1jrevj7n3oat164.apps.googleusercontent.com", 
+                auto_select: false,
+                callback: cw.handleCredentialsResponse
                 });
                 google.accounts.id.prompt();
-              }
-              
+}
+
         this.handleCredentialsResponse=function(response){
                 let jwt=response.credential;
                 //let user=JSON.parse(atob(jwt.split(".")[1]));
@@ -69,9 +70,9 @@ function ControlWeb() {
                 //console.log(user.picture);
                 rest.enviarJwt(jwt);
                 }
-               
+
     // Función para agregar el botón
-   this.agregarBotonExit = function() {
+this.agregarBotonExit = function() {
         let cadena = '<div class="form-group" id="mExit">';
         cadena += '<button id="btnEx" type="button" class="btn btn-primary">Cerrar Sesion</button>';
         cadena += '</div>';
@@ -86,11 +87,11 @@ function ControlWeb() {
             }
         });
     }
-             
+
 
     
 
-     $(document).ready(function () {
+$(document).ready(function () {
         
         $("#btnExit").on("click", function () {
             // Mostrar un mensaje de confirmación al usuario
@@ -125,6 +126,17 @@ function ControlWeb() {
             $("#mOU").remove();
         });
     }
+
+    this.mostrarModal=function(m){
+        $("#msg").remove();
+        let cadena="<div id='msg'>"+m+"</div>";
+        $('#mBody').append(cadena)
+        $('#miModal').modal();
+        // $('#btnModal').on('click',function(){
+        // })
+        }
+
+
 
     this.mostrarNumeroUsuarios = function () {
         let cadena = '<div class="form-group" id="mNU">';
@@ -215,7 +227,7 @@ function ControlWeb() {
         
                 $("#btnLogin").on("click", function(event) {
                     event.preventDefault();
-                 
+
                     let email = $("#usuarioLogin").val();
                     let pwd = $("#pwdLogin").val();
                     if (email && pwd) {
@@ -231,7 +243,7 @@ function ControlWeb() {
     
 
         this.mostrarFormulario = function(formularioId) {
-           
+
             if (formularioId === 'fmRegistro') {
                 // Muestra el formulario de registro
                 this.mostrarRegistro()
@@ -247,9 +259,7 @@ function ControlWeb() {
                 console.log('Formulario no válido');
             }
         }
-   
-  
-   
+
 
 
 }

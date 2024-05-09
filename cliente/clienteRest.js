@@ -73,16 +73,16 @@ function ClienteRest() {
         });
     };
 
-  
+
 
     // Registro de usuario
     this.registrarUsuario=function(email,password){
         
 		$.ajax({
-		    type:'POST',
-		    url:'/registrarUsuario',
-		    data: JSON.stringify({"email":email,"password":password}),
-		    success: function(data){
+		type:'POST',
+		url:'/registrarUsuario',
+		data: JSON.stringify({"email":email,"password":password}),
+		success: function(data){
 
 				if (data.nick!==-1){				
 					console.log("Usuario "+data.nick+" ha sido registrado");
@@ -96,16 +96,20 @@ function ClienteRest() {
 				else{
 					console.log("El nick está ocupado");
                     cw.limpiar()
-                    cw.mostrarMensaje("PRUEBAA "+data.nick);
+                    cw.mostrarMsg("PRUEBAA "+data.nick);
 					cw.mostrarMsg("El nick está ocupado");
-				}
-		     },
+
+                    console.log("Hay un usuario registrado con ese email");
+                    cw.mostrarMsg("Hay un usuario registrado con ese email");
+                    cw.mostrarModal("No se ha podido registrar el usuario");
+
+				} },
             error: function (xhr, textStatus, errorThrown) {
                 console.log("Status: " + textStatus);
                 console.log("Error: " + errorThrown);
                 cw.mostrarMsg("ERROR");
-			 },
-		    contentType:'application/json'
+		},
+		contentType:'application/json'
 		});
 	}
 
@@ -148,7 +152,7 @@ function ClienteRest() {
             }
 
 
-   this.enviarJwt=function(jwt){
+this.enviarJwt=function(jwt){
     $.ajax({
         type:'POST',
         url:'/enviarJwt',

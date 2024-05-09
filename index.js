@@ -43,6 +43,8 @@ passport.use(new LocalStrategy({ usernameField: "email", passwordField: "passwor
   }
 ));
 
+
+
 app.use(passport.session());
 
 const sistema = new modelo.Sistema();
@@ -90,25 +92,55 @@ app.listen(PORT, () => {
 app.get("/auth/google", passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 app.get('/google/callback',
-    passport.authenticate('google', { failureRedirect: '/fallo' }), function(req, res) {
+    passport.authenticate('google', { failureRedirect: '/fallo' }), 
+    function(req, res) {
         res.redirect('/good');
     });
 
-    app.post('/oneTap/callback',
+app.post('/oneTap/callback',
     passport.authenticate('google-one-tap', { failureRedirect: '/fallo' }),
     function(req, res) {
-     res.redirect('/good');
+        res.redirect('/good');
+
+    });
+
+    app.get('/auth/twitter', passport.authenticate('twitter'));
+
+    app.get('/auth/twitter/callback', passport.authenticate('twitter', {
+        successReturnToOrRedirect: '/',
+        failureRedirect: '/login'
+      }));
+
+
+    app.get('/auth/github',
+      passport.authenticate('github', { scope: [ 'user:email' ] }));
+    
+
+app.get('/auth/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/fallo' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/good');
+  });
+    
+  app.get("/good", function(request,response){
+    console.log("Contenido de request.user:", request);
+
+    if (request.user && request.user.emails && request.user.emails.length > 0) {
+        let email = request.user.emails[0].value;
+        sistema.usuarioGoogle({"email": email}, function(obj){
+            response.cookie('nick', obj.email);
+            response.redirect('/');
+        });
+    } else {
+        // Manejar el caso en el que no hay email disponible en el usuario autenticado
+        console.log("No se encontró un email válido en el usuario autenticado");
+        // Redirigir a una página de error u otra página relevante
+        response.redirect('/error');
+    }
 });
-    
-app.get("/good", function(request,response){
-        let email=request.user.emails[0].value;
-        sistema.usuarioGoogle({"email":email},function(obj){
-        response.cookie('nick',obj.email);
-        response.redirect('/');
-        });
-        });
-    
-      
+
+
 
 
 
@@ -149,10 +181,9 @@ app.post("/loginUsuario", passport.authenticate("local", {
     
     
     
-   
 });
 
-    
+
 
 /* app.post("/loginUsuario", function(request, response) {
     console.log("HAS LLEGADO HASTA AQUI")
@@ -213,5 +244,5 @@ app.get("/cerrarSesion",haIniciado,function(request,response){
                     app.post('/oneTap/callback',
                     passport.authenticate('google-one-tap', { failureRedirect: '/fallo' }),
                     function(req, res) {
-                     res.redirect('/good');
+                    res.redirect('/good');
                 });

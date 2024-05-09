@@ -60,6 +60,8 @@ function Sistema() {
             callback(obj);
         });
     }
+
+
     this.registrarUsuario = function (obj, callback) {
         let modelo = this;
         if (!obj.nick) {
@@ -78,8 +80,7 @@ function Sistema() {
       
           modelo.cad.buscarUsuario({"email":obj.email}, function (usr) {
             if (!usr) {
-             
-             
+
               // El usuario no existe, luego lo puedo registrar
               obj.key = Date.now().toString();
               obj.confirmada = false;
@@ -99,11 +100,10 @@ function Sistema() {
         });
       }
 
-   
     
 
 
-   
+
         
 
         this.confirmarUsuario=function(obj,callback){
@@ -121,10 +121,10 @@ function Sistema() {
             }
             })
             }
-         
+
 
            // Método para verificar la clave durante el inicio de sesión
-           this.loginUsuario = function (obj, callback) {
+this.loginUsuario = function (obj, callback) {
 
             this.cad.buscarUsuario({ "email":obj.email, "confirmada":true }, function (usr) {
               if (usr) {

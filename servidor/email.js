@@ -2,8 +2,8 @@
 const nodemailer = require('nodemailer');
 
 // URL de tu aplicación, puede ser local o la URL de despliegue
-//const url = "http://localhost:3000/";
- const url = "https://procesossoft-yhkqrakm7q-ew.a.run.app/"; 
+const url = "http://localhost:3000/";
+//const url = "https://procesossoft-yhkqrakm7q-ew.a.run.app/"; 
 
 // Configuración del transporte de correo
 const transporter = nodemailer.createTransport({

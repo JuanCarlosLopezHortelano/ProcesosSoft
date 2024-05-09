@@ -22,7 +22,7 @@ function CAD() {
 
     // Función interna para buscar o crear un usuario en la colección
     this.buscarOCrearUsuario=function(usr,callback){
-         buscarOCrear(this.usuarios,usr,callback);
+        buscarOCrear(this.usuarios,usr,callback);
         }
 
         function buscarOCrear(coleccion,criterio,callback)
@@ -31,9 +31,9 @@ function CAD() {
             true,returnDocument:"after",projection:{email:1}}, function(err,doc) {
             if (err) { throw err; }
             else {
-               console.log("Elemento actualizado");
-               console.log(doc.value.email);
-               callback({email:doc.value.email});
+            console.log("Elemento actualizado");
+            console.log(doc.value.email);
+            callback({email:doc.value.email});
         }
         });
         }
@@ -71,7 +71,7 @@ function CAD() {
                 console.log("error");
             } else {
                 console.log("Nuevo elemento creado");
-              
+
                 callback(elemento);
             }
         });
