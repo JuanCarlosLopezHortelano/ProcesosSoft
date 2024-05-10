@@ -43,22 +43,6 @@ function(accessToken, refreshToken, profile, done) {
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-passport.use(
-  new GoogleOneTapStrategy(
-    {
-      clientID: "937465366567-hs9jnojes1i6jmouqce8ghj6183hn6g0.apps.googleusercontent.com", // your google client ID
-      clientSecret: "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", // your google client secret
-      verifyCsrfToken: false, // whether to validate the csrf token or not
-    },
-    function (profile, done) {
-      // Here your app code, for example:
-      // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      //   return done(err, user);
-      // });
-      return done(null, profile);
-    }
-  )
-  );
 
 
 
