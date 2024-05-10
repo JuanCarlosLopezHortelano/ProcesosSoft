@@ -132,7 +132,8 @@ function ClienteRest() {
                     } else {
                         cw.limpiar()
                         console.log("Credenciales incorrectas o usuario no registrado");
-                        cw.mostrarMsg("Bienvenido de nuevo, " + data.nick);
+                        cw.mostrarModal("Inicio de sesion fallido");
+
                     }
                 },
                 error: function(xhr, textStatus, errorThrown) {

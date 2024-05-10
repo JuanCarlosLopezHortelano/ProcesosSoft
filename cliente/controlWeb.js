@@ -87,7 +87,14 @@ this.agregarBotonExit = function() {
             }
         });
     }
-
+    this.mostrarModal=function(m){
+        $("#msg").remove();
+        let cadena="<div id='msg'>"+m+"</div>";
+        $('#mBody').append(cadena)
+        $('#miModal').modal();
+ // $('#btnModal').on('click',function(){
+ // })
+ }
 
     
 

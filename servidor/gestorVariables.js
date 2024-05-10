@@ -44,8 +44,9 @@ async function accessCLAVECORREO() {
 
 
       options.user = correo;
+      console.log(correo)
       options.pass = pass;
-
+      console.log(pass)
 
     callback(options);
   }

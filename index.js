@@ -1,9 +1,16 @@
 const fs = require("fs");
 const express = require('express');
 const app = express();
+const httpServer = require('http').Server(app);
 const bodyParser = require("body-parser");
+const { Server } = require("socket.io");
+
+const moduloWS = require("./servidor/servidorWS.js");
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+
 
 
 // Importa el módulo 'passport' para la autenticación en Node.js.
@@ -27,6 +34,13 @@ app.use(cookieSession({
 
 // Inicializa Passport
 app.use(passport.initialize());
+
+
+
+let ws = new moduloWS.WsServidor();
+let io = new Server();
+
+
 
 passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password" },
   function (email, password, done) {
@@ -83,10 +97,6 @@ app.get("/eliminarUsuario/:nick", function(request, response) {
     response.json(res);
 });
 
-app.listen(PORT, () => {
-    console.log(`App está escuchando en el puerto ${PORT}`);
-    console.log('Ctrl+C para salir');
-});
 
 
 app.get("/auth/google", passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -246,3 +256,11 @@ app.get("/cerrarSesion",haIniciado,function(request,response){
                     function(req, res) {
                     res.redirect('/good');
                 });
+
+httpServer.listen(PORT, () => {
+    console.log(`App está escuchando en el puerto ${PORT}`);
+    console.log('Ctrl+C para salir');
+                    });
+    io.listen(httpServer);
+    ws.lanzarServidor(io,sistema);
+                    
