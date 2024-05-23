@@ -8,6 +8,8 @@ function ClienteRest() {
         console.log("Usuario "+nick+" ha sido registrado");
         msg="Bienvenido al sistema, "+nick;
         $.cookie("nick", nick);
+
+        
         }
         else{
         console.log("El nick esta en uso");
@@ -102,6 +104,7 @@ function ClienteRest() {
                     console.log("Hay un usuario registrado con ese email");
                     cw.mostrarMsg("Hay un usuario registrado con ese email");
                     cw.mostrarModal("No se ha podido registrar el usuario");
+                    
 
 				} },
             error: function (xhr, textStatus, errorThrown) {
@@ -129,12 +132,21 @@ function ClienteRest() {
                         $.cookie("nick", data.nick);
                         cw.limpiar();
                         cw.mostrarMsg("Bienvenido de nuevo, " + data.nick);
+                        cw.limpiar();
+                        
+                        cw.mostrarMenuPartidas();
+                        console.log("AQUIIIIi")
+                        WSH.email=data.email;
+                        
+
                     } else {
                         cw.limpiar()
                         console.log("Credenciales incorrectas o usuario no registrado");
                         cw.mostrarModal("Inicio de sesion fallido");
 
                     }
+
+                    
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     console.log("Error al realizar la solicitud.");
@@ -165,12 +177,16 @@ this.enviarJwt=function(jwt){
                 console.log("Usuario "+data.nick+" ha sido registrado");
                 msg="Bienvenido al sistema, "+data.nick;
                 $.cookie("nick",data.nick);
+                cw.limpiar();
+                cw.mostrarMsg(msg);
+                cw.limpiar();
+                cw.mostrarMenuPartidas();
+                console.log("AQUIIIIi")
             }
             else{
                 console.log("El nick ya está ocupado");
             }
-            cw.limpiar();
-            cw.mostrarMsg(msg);
+        
         },
         error:function(xhr, textStatus, errorThrown){
             //console.log(JSON.parse(xhr.responseText));

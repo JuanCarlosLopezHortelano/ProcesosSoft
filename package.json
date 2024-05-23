@@ -15,6 +15,7 @@
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cookie-session": "^2.1.0",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "http": "^0.0.1-security",
     "jasmine-node": "^3.0.0",
@@ -29,6 +30,7 @@
     "passport-google-one-tap": "^1.0.1",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "uuid": "^9.0.1"
   }
 }

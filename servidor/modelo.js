@@ -1,11 +1,16 @@
 const cad = require("./cad.js");
 const bcrypt = require('bcrypt');
 const correo=require("./email.js");
+const { v4: uuidv4 } = require('uuid');
+
 
 
 function Sistema() {
     // Objeto que almacena a los usuarios
     this.usuarios = {};
+     
+    //Objeto que almacena partidas
+    this.partidas = {};
 
     // Conexión a la base de datos
     this.cad = new cad.CAD();
@@ -61,7 +66,6 @@ function Sistema() {
         });
     }
 
-
     this.registrarUsuario = function (obj, callback) {
         let modelo = this;
         if (!obj.nick) {
@@ -99,12 +103,6 @@ function Sistema() {
           });
         });
       }
-
-    
-
-
-
-        
 
         this.confirmarUsuario=function(obj,callback){
             let modelo=this;
@@ -151,18 +149,90 @@ this.loginUsuario = function (obj, callback) {
               }
             });
           }
+
+
+
+          //Crear Partidas
+
           
-        
+      this.crearPartida = function (email) {
+            
+        let propietario = this.usuarios[email];
+            if (!propietario) {
+                console.log("El usuario no existe");
+                return { "error": "El usuario no existe" };
+            }
+    
+            const codigo = this.generarIdPartida();
+            const partida = new Partida(codigo, propietario);
+            this.partidas[codigo] = partida;
+            return { "idPartida": codigo, "propietario": propietario.nick };
+        }
+
+
+        this.unirseAPartida = function (idPartida, email) {
+          const jugador = this.usuarios[email];
+          if (!jugador) {
+              console.log("El usuario no existe");
+              return { "error": "El usuario no existe" };
+          }
+  
+          if (this.partidas[idPartida]) {
+              let partida = this.partidas[idPartida];
+              if (partida.jugadores.length < partida.maxJug) {
+                  partida.jugadores.push(jugador);
+                  return { "idPartida": idPartida, "jugador": jugador.nick };
+              } else {
+                  console.log("La partida está llena");
+                  return { "error": "La partida está llena" };
+              }
+          } else {
+              console.log("La partida no existe");
+              return { "idPartida": -1 };
+          }
+        }
+    
+
+    this.eliminarPartida = function(idPartida){
+      if (this.partidas[idPartida]) {
+        delete this.partidas[idPartida];
+        return { "idPartida": idPartida };
+    } else {
+        console.log("La partida no existe");
+        return { "idPartida": -1 };
+    }
+    }
+
+    this.generarIdPartida = function () {
+      // Genera un ID único para la partida usando UUID
+      return uuidv4();
+  }
+
+
+  
+
+  }
+
+
             
 
               
-        
-
-}
+      
 
 function Usuario(nick) {
     this.nick = nick;
 }
+
+function Partida(codigo){
+  this.codigo = codigo;
+  this.jugadores = [];
+  this.maxJug = 2;
+  
+  }
+
+
+
+
 
 // Exporta la clase Sistema
 module.exports.Sistema = Sistema;

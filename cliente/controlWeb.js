@@ -247,7 +247,38 @@ $(document).ready(function () {
                 });
             });
         }
-    
+        
+        this.mostrarMenuPartidas = function() {
+            if ($.cookie('nick')) {
+                return true;
+            }
+            
+            $("#fmRegistro").remove();
+
+            $("#registro").load("./menupartidas.html", function() {
+        
+                $("#btnUnirPartida").on("click", function(event) {
+                    event.preventDefault();
+
+                    let codigoPartida = $("#btnUnirPartida").val();
+                    
+                    if (codigoPartida) {
+                        
+                        console.log("codigoPartida: " + codigoPartida );
+                        rest.menuPartidaUnirse(codigoPartida);
+                    }
+
+                    
+                });
+
+                $("#btnCrearPartida").on("click", function(event) {
+                
+                    console.log("Partida creada" );
+                    rest.menuPartidaCrear();
+
+                });
+            });
+        }
 
         this.mostrarFormulario = function(formularioId) {
 

@@ -1,0 +1,42 @@
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    .border-vertical {
+        border-left: 1px solid #ccc;
+        height: 100%;
+    }
+</style>
+
+
+<div class="container" >
+    <div class="row d-flex">
+        <!-- Columna para unirse a una partida -->
+        <div class="col-md-5">
+            <h2>Unirse a una Partida</h2>
+            
+            <div class="form-group">
+                <label for="idPartida">ID de la Partida:</label>
+                <input type="text" class="form-control" id="idPartida" placeholder="Introduce el ID de la partida">
+            </div>
+            <button type="button" id="btnUnirPartida" class="btn btn-primary">Unirse a Partida</button>
+        </div>
+        
+        <!-- Línea vertical -->
+        <div class="col-md-1 d-flex justify-content-center align-items-center">
+            <div class="border-vertical"></div>
+        </div>
+        
+        <!-- Columna para crear una partida -->
+        <div class="col-md-5">
+            <h2>Crear una Partida</h2>
+            
+            <button type="button" id="btnCrearPartida" class="btn btn-success">Crear Partida</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <h4>Cómo Jugar a las Damas</h4>
+    <img src="/cliente/img/img_menuJuego.gif"></img>
+    <p>El objetivo del juego de damas es capturar todas las piezas del oponente o bloquearlas para que no puedan moverse. Se juega en un tablero de 8x8 con 12 piezas por jugador. Las piezas se mueven en diagonal hacia adelante y capturan saltando sobre las piezas del oponente. Cuando una pieza llega al otro lado del tablero, se corona y puede moverse en ambas direcciones.</p>
+</footer>

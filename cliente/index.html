@@ -33,7 +33,8 @@
 
     <script src="cliente\clienteRest.js"></script>
     <script src="cliente\controlWeb.js"></script>
-
+    <script src="./cliente/clienteWS.js"></script>
+    
 
 
 
@@ -150,13 +151,16 @@
    </div>
 
      <script>
+
         function ini() {
             cw = new ControlWeb();
             rest = new ClienteRest();
             cw.comprobarSesion();
-            cw.clienteWS();
+            ws = new ClienteWS();
+           
         };
     </script>
+   
     
 </body>
 

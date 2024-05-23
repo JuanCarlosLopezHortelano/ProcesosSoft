@@ -7,6 +7,7 @@ const { Server } = require("socket.io");
 
 const moduloWS = require("./servidor/servidorWS.js");
 
+// Configuración de middleware para parsear solicitudes
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 // Importa el módulo 'passport' para la autenticación en Node.js.
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
+
 // Importa el módulo 'cookie-session' para gestionar las sesiones de cookies.
 const cookieSession = require("cookie-session");
 
@@ -25,6 +27,7 @@ require("./servidor/passport-setup.js");
 const modelo = require("./servidor/modelo.js");
 const PORT = process.env.PORT || 3000;
 
+// Sirve archivos estáticos desde el directorio raíz
 app.use(express.static(__dirname + "/"));
 
 app.use(cookieSession({
@@ -32,16 +35,16 @@ app.use(cookieSession({
   keys: ['key1', 'key2']
 }));
 
-// Inicializa Passport
+// Inicializa Passport para la autenticación
 app.use(passport.initialize());
-
+app.use(passport.session());
 
 
 let ws = new moduloWS.WsServidor();
 let io = new Server();
 
 
-
+// Configuración de estrategia de autenticación local
 passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password" },
   function (email, password, done) {
     sistema.loginUsuario({ "email": email, "password": password }, function (user) {
@@ -59,9 +62,14 @@ passport.use(new LocalStrategy({ usernameField: "email", passwordField: "passwor
 
 
 
-app.use(passport.session());
+
 
 const sistema = new modelo.Sistema();
+
+
+
+// Rutas para manejar solicitudes HTTP
+
 
 app.get("/", function(_request, response){
     var contenido = fs.readFileSync(__dirname + "/cliente/index.html");
@@ -97,7 +105,7 @@ app.get("/eliminarUsuario/:nick", function(request, response) {
     response.json(res);
 });
 
-
+// Rutas para autenticación con Google
 
 app.get("/auth/google", passport.authenticate('google', { scope: ['profile', 'email'] }));
 
@@ -114,26 +122,22 @@ app.post('/oneTap/callback',
 
     });
 
-    app.get('/auth/twitter', passport.authenticate('twitter'));
-
-    app.get('/auth/twitter/callback', passport.authenticate('twitter', {
-        successReturnToOrRedirect: '/',
-        failureRedirect: '/login'
-      }));
 
 
-    app.get('/auth/github',
-      passport.authenticate('github', { scope: [ 'user:email' ] }));
+// Rutas para autenticación con GitHub
+
+app.get('/auth/github',passport.authenticate('github', { scope: [ 'user:email' ] }));
     
 
-app.get('/auth/github/callback', 
-  passport.authenticate('github', { failureRedirect: '/fallo' }),
-  function(req, res) {
+app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/fallo' }),
+function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/good');
-  });
+});
+
     
-  app.get("/good", function(request,response){
+  // Ruta de éxito en la autenticación
+app.get("/good", function(request,response){
     console.log("Contenido de request.user:", request);
 
     if (request.user && request.user.emails && request.user.emails.length > 0) {
@@ -155,7 +159,7 @@ app.get('/auth/github/callback',
 
 
 app.get("/fallo", function(request, response) {
-   
+
     response.send({nick: "nook"});
 });
 
@@ -260,7 +264,8 @@ app.get("/cerrarSesion",haIniciado,function(request,response){
 httpServer.listen(PORT, () => {
     console.log(`App está escuchando en el puerto ${PORT}`);
     console.log('Ctrl+C para salir');
-                    });
-    io.listen(httpServer);
-    ws.lanzarServidor(io,sistema);
+});
+
+io.listen(httpServer);
+ws.lanzarServidor(io,sistema);
                     
