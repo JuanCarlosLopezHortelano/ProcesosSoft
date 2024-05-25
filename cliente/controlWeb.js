@@ -288,17 +288,74 @@ $(document).ready(function () {
             } else if (formularioId === 'fmLogin') {
                 // Muestra el formulario de inicio de sesión
                 this.mostrarLogin()
-                
-                 // Para que permita loguearse con google
-                //this.mostrarGoogle() 
+            } else if (formularioId === 'fmTablero') {
+                // Muestra el formulario de inicio de sesión
+                this.mostrarTablero()
+            
             } else {
-                // Mostrar un mensaje de error si el formulario no es válido
-
                 console.log('Formulario no válido');
             }
         }
+        
+        
+    
+        this.mostrarTablero = function() {
+            console.log("Cargando tablero de damas...");
+    
+            $("#fmRegistro").remove();
+    
+            $("#registro").load("./cliente/tablero.html", function(response, status, xhr) {
+                if (status == "error") {
+                    console.log("Error cargando tablero.html: " + xhr.status + " " + xhr.statusText);
+                } else {
+                    console.log("Tablero de damas cargado.");
+                    const cells = document.querySelectorAll('.cell');
+    
+                    cells.forEach((cell, index) => {
+                        const row = Math.floor(index / 8);
+                        const col = index % 8;
+    
+                        if (row < 3 && (row + col) % 2 === 1) {
+                            cell.innerHTML = '<div class="piece red"></div>';
+                        } else if (row > 4 && (row + col) % 2 === 1) {
+                            cell.innerHTML = '<div class="piece black"></div>';
+                        }
+                    });
+    
+                    // Cronómetros
+                    let timer1 = document.getElementById('timer1');
+                    let timer2 = document.getElementById('timer2');
+                    let time1 = 0;
+                    let time2 = 0;
+                    let interval1, interval2;
+                    
+                    function startTimer1() {
+                        interval1 = setInterval(() => {
+                            time1++;
+                            timer1.textContent = formatTime(time1);
+                        }, 1000);
+                    }
+                
+                    function startTimer2() {
+                        interval2 = setInterval(() => {
+                            time2++;
+                            timer2.textContent = formatTime(time2);
+                        }, 1000);
+                    }
+                
+                    function formatTime(seconds) {
+                        const mins = Math.floor(seconds / 60);
+                        const secs = seconds % 60;
+                        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                    }
+                    // Iniciar cronómetros
+                    startTimer1();
+                    startTimer2();
+                }
+            });
+        };
+    }
 
 
 
-}
 
