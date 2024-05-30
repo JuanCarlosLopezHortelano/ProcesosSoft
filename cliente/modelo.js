@@ -1,6 +1,6 @@
-const cad = require("./cad.js");
+
 const bcrypt = require('bcrypt');
-const correo=require("./email.js");
+
 const { v4: uuidv4 } = require('uuid');
 
 
@@ -13,7 +13,7 @@ function Sistema() {
     this.partidas = {};
 
     // Conexión a la base de datos
-    this.cad = new cad.CAD();
+    //this.cad = new cad.CAD();
 
     // Verifica si un usuario está activo
     this.usuarioActivo = function (nick) {
@@ -24,11 +24,7 @@ function Sistema() {
         }
     }
 
-    // Conectar a la base de datos
-    this.cad.conectar(function (db) {
-        console.log("Conectado a Mongo Atlas");
-    });
-
+   
     // Agrega un usuario al sistema
     this.agregarUsuario = function (nick) {
         if (!this.usuarios[nick]) {

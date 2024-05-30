@@ -26,27 +26,24 @@ async function accessCLAVECORREO() {
         name: name,
       });
       const datos = version.payload.data.toString('utf8');
+      console.log("Datos "+datos);
+
       return datos;
 
     } 
   
 
 
-  module.exports.obtenerOptions = async function(callback) {
-    const options = { user: '', pass: '' }; //juancarloslhhellin@gmail.com
+    module.exports.obtenerOptions = async function(callback) {
+      const options = {
+        user: "",
+        pass: ""
+      };
     
-    
-    
-    let pass = await accessCLAVECORREO();
-
-    let correo = await accessCORREO_GMAIL();
-
-
-
-      options.user = correo;
-      console.log(correo)
+      let pass = await accessCLAVECORREO();
+      let user = await accessCORREO_GMAIL();
+      options.user = user;
       options.pass = pass;
-      console.log(pass)
-
-    callback(options);
-  }
+      callback(options);
+    
+    };
