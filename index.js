@@ -40,7 +40,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-let ws = new moduloWS.WsServidor();
+let ws = new moduloWS.ServidorWS();
 let io = new Server();
 
 
@@ -131,7 +131,6 @@ app.get('/auth/github',passport.authenticate('github', { scope: [ 'user:email' ]
 
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/fallo' }),
 function(req, res) {
-    // Successful authentication, redirect home.
     res.redirect('/good');
 });
 

@@ -1,13 +1,65 @@
 
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
     .border-vertical {
         border-left: 1px solid #ccc;
         height: 100%;
     }
+    
+    .rectangle {
+    width: 300px; /* Ancho del rectángulo */
+    height: 150px; /* Altura del rectángulo */
+    background-color: beige; /* Fondo beige */
+    display: flex;
+    justify-content: center; /* Centra el div interno horizontalmente */
+    align-items: center; /* Centra el div interno verticalmente */
+    border: 1px solid #ccc; /* Borde opcional */
+    margin: 50px auto; /* Centra el rectángulo en la página */
+}
+
+.inner-div {
+    padding: 10px;
+    background-color: white; /* Fondo opcional para el div interno */
+    border: 1px solid #ccc; /* Borde opcional para el div interno */
+    text-align: center;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f1f1f1;
+    padding: 10px 20px; /* Agrega padding horizontal para los márgenes */
+    box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total del footer */
+    border-top: 1px solid #ccc; /* Borde superior opcional */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-content {
+    display: flex;
+    align-items: center; /* Alinea el contenido verticalmente al centro */
+    width: 100%;
+}
+
+.footer-content h4 {
+    margin-right: 10px; /* Espacio entre el título y la imagen */
+}
+
+.footer-content img {
+    margin-left: auto; /* Mueve la imagen hacia la derecha */
+}
+
+.footer p {
+    margin-top: 10px;
+    width: 100%;
+}
 </style>
 
-
+<br>
 <div class="container" >
     <div class="row d-flex">
         <!-- Columna para unirse a una partida -->
@@ -34,9 +86,14 @@
         </div>
     </div>
 </div>
-
-<footer>
-    <h4>Cómo Jugar a las Damas</h4>
-    <img src="/cliente/img/img_menuJuego.gif"></img>
+<br>
+<br>
+<br>
+<br>
+<footer class="footer">
+    <div class="footer-content">
+        <h4>Cómo Jugar a las Damas</h4>
+        <img src="/cliente/img/img_menuJuego.gif" width="150" height="150" alt="Imagen del juego de damas">
+    </div>
     <p>El objetivo del juego de damas es capturar todas las piezas del oponente o bloquearlas para que no puedan moverse. Se juega en un tablero de 8x8 con 12 piezas por jugador. Las piezas se mueven en diagonal hacia adelante y capturan saltando sobre las piezas del oponente. Cuando una pieza llega al otro lado del tablero, se corona y puede moverse en ambas direcciones.</p>
 </footer>

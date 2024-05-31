@@ -228,7 +228,7 @@ $(document).ready(function () {
             
             $("#fmRegistro").remove();
 
-            $("#registro").load("./cliente/login.html", function() {
+            $("#registro").load("./cliente/menupartidas.html", function() {
                 // This code is executed after loading the login form.
                  // Logging the message when the button is clicked.
         

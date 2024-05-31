@@ -34,9 +34,9 @@
     <script src="cliente\clienteRest.js"></script>
     <script src="cliente\controlWeb.js"></script>
     <script src="./cliente/clienteWS.js"></script>
-    <html>
+<!--     <script src="cliente\modelo.js"></script>
+ -->    <html>
 
-<script src="./modelo.js"></script>
 
 
 
@@ -144,19 +144,22 @@
             cw = new ControlWeb();
             rest = new ClienteRest();
             cw.comprobarSesion();
-            //ws = new ClienteWS();
+            ws = new ClienteWS();
            
         };
     </script>
-    <script>
-        sistema=new Sistema(true);
-        usr1=new
-        Usuario({"email":"pepe@pepe.es","nick":"Pepe","nombre":"Pepe"});
-        sistema.agregarUsuario(usr1);
-        usr2=new
-        Usuario({"email":"luis@luis.es","nick":"Luis","nombre":"Luis"});
-        sistema.agregarUsuario(usr2);
-        </script>
+  <!--  <script>
+    sistema=new Sistema(true);
+    usr1=new
+    Usuario({"email":"pepe@pepe.es","nick":"Pepe","nombre":"Pepe"});
+    sistema.agregarUsuario(usr1);
+    usr2=new
+    Usuario({"email":"luis@luis.es","nick":"Luis","nombre":"Luis"});
+    sistema.agregarUsuario(usr2);
+    sistema.crearPartida(usr1.email)
+    sistema.partidasDisponibles()
+
+    </script> -->
 </body>
 
 </html>

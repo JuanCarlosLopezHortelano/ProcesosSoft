@@ -136,7 +136,7 @@ function ClienteRest() {
                         
                         cw.mostrarMenuPartidas();
                         console.log("AQUIIIIi")
-                        WSH.email=data.email;
+                        ws.email=data.email;
                         
 
                     } else {
@@ -177,6 +177,8 @@ this.enviarJwt=function(jwt){
                 console.log("Usuario "+data.nick+" ha sido registrado");
                 msg="Bienvenido al sistema, "+data.nick;
                 $.cookie("nick",data.nick);
+                ws.email=data.email;
+
                 cw.limpiar();
                 cw.mostrarMsg(msg);
                 cw.limpiar();

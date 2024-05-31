@@ -1,7 +1,6 @@
 const cad = require("./cad.js");
 const bcrypt = require('bcrypt');
 const correo=require("./email.js");
-const { v4: uuidv4 } = require('uuid');
 
 
 
@@ -30,29 +29,34 @@ function Sistema() {
     });
 
     // Agrega un usuario al sistema
-    this.agregarUsuario = function (nick) {
-        if (!this.usuarios[nick]) {
-            this.usuarios[nick] = new Usuario(nick);
-            return { "nick": nick };
-        } else {
-            console.log(nick + " está en uso");
-            return { "nick": -1 };
-        }
-    }
+    this.agregarUsuario = function (usr) {
+      const email = usr.email;
+      if (!this.usuarios[email]) {
+          this.usuarios[email] = new Usuario(usr.email, usr.nick, usr.nombre);
+          console.log("Nuevo usuario en el sistema: " + email);
+          return { "email": email };
+      } else {
+          console.log("El email " + email + " está en uso");
+          return { "email": -1 };
+      }
+  }
 
     // Obtiene la lista de usuarios
     this.obtenerUsuarios = function () {
         return this.usuarios;
     }
 
-    // Elimina un usuario del sistema
-    this.eliminarUsuario = function (nick) {
-        if (this.usuarioActivo(nick)) {
-            return "Usuario eliminado: " + nick;
-        } else {
-            return "No existe";
-        }
+   // Elimina un usuario del sistema
+   this.eliminarUsuario = function (email) {
+    if (this.usuarios.hasOwnProperty(email)) {
+        delete this.usuarios[email];
+        console.log("Usuario eliminado: " + email);
+        return { "email": email };
+    } else {
+        console.log("No existe el usuario: " + email);
+        return { "email": -1 };
     }
+}
 
     // Obtiene el número de usuarios en el sistema
     this.numeroUsuarios = function () {
@@ -104,21 +108,21 @@ function Sistema() {
         });
       }
 
-        this.confirmarUsuario=function(obj,callback){
-            let modelo=this;
-            this.cad.buscarUsuario({"email":obj.email,"confirmada":false,"key":obj.key},function(usr){
-            if (usr){
+    this.confirmarUsuario=function(obj,callback){
+      
+      let modelo=this;
+      this.cad.buscarUsuario({"email":obj.email,"confirmada":false,"key":obj.key},function(usr){
+        if (usr){
             usr.confirmada=true;
             modelo.cad.actualizarUsuario(usr,function(res){
-            callback({"email":res.email}); //callback(res)
+              callback({"email":res.email}); //callback(res)
             })
-            }
-            else
+        }else
             {
             callback({"email":-1});
-            }
-            })
-            }
+        }
+      })
+    }
 
 
            // Método para verificar la clave durante el inicio de sesión
@@ -155,62 +159,46 @@ this.loginUsuario = function (obj, callback) {
           //Crear Partidas
 
           
-      this.crearPartida = function (email) {
-            
-        let propietario = this.usuarios[email];
-            if (!propietario) {
-                console.log("El usuario no existe");
-                return { "error": "El usuario no existe" };
+      this.crearPartida = function(email) {
+            const codigo = this.obtenerCodigo()
+            console.log("code:", { codigo });
+            this.partidas[codigo] = new Partida(codigo);
+            this.partidas[codigo].jugadores.push(email); // Agregar el usuario que crea la partida
+            return codigo;
+        }
+
+        this.unirAPartida = function(email, codigo) {
+          const partida = this.partidas[codigo];
+          if (partida && partida.jugadores.length < 2) {
+              partida.jugadores.push(email);
+              console.log("Se pudo unir a la partida");
+
+              return true;
+            } else {
+                console.log("No se pudo unir a la partida");
+                return false;
             }
-    
-            const codigo = this.generarIdPartida();
-            const partida = new Partida(codigo, propietario);
-            this.partidas[codigo] = partida;
-            console.log("Codigo:",{codigo},"Propietario:",{propietario})
-            return { "idPartida": codigo, "propietario": propietario.nick };
+          }
+
+          this.obtenerCodigo = function() {
+            return Math.floor(Math.random() * 10000) + 1;
         }
 
-
-        this.unirseAPartida = function (idPartida, email) {
-          const jugador = this.usuarios[email];
-          if (!jugador) {
-              console.log("El usuario no existe");
-              return { "error": "El usuario no existe" };
-          }
-  
-          if (this.partidas[idPartida]) {
-              let partida = this.partidas[idPartida];
-              if (partida.jugadores.length < partida.maxJug) {
-                  partida.jugadores.push(jugador);
-                  return { "idPartida": idPartida, "jugador": jugador.nick };
-              } else {
-                  console.log("La partida está llena");
-                  return { "error": "La partida está llena" };
+        this.partidasDisponibles = function() {
+          let lista = [];
+          
+          // Iterar sobre las propiedades del objeto this.partidas
+          for (let key in this.partidas) {
+              if (this.partidas.hasOwnProperty(key)) {
+                  let p = this.partidas[key];
+                  if (p.jugadores.length < 2) {
+                      lista.push(p.codigo);
+                  }
               }
-          } else {
-              console.log("La partida no existe");
-              return { "idPartida": -1 };
           }
-        }
-    
-
-    this.eliminarPartida = function(idPartida){
-      if (this.partidas[idPartida]) {
-        delete this.partidas[idPartida];
-        return { "idPartida": idPartida };
-    } else {
-        console.log("La partida no existe");
-        return { "idPartida": -1 };
-    }
-    }
-
-    this.generarIdPartida = function () {
-      // Genera un ID único para la partida usando UUID
-      return uuidv4();
-  }
-
-
-  
+      
+          return lista.length > 0 ? lista : false;
+      };
 
   }
 
@@ -220,10 +208,11 @@ this.loginUsuario = function (obj, callback) {
               
       
 
-function Usuario(nick) {
-    this.nick = nick;
+  function Usuario(usuario) {
+    this.email = usuario.email;
+    this.nick = usuario.nick;
+    this.nombre = usuario.nombre;
 }
-
 function Partida(codigo){
   this.codigo = codigo;
   this.jugadores = [];
