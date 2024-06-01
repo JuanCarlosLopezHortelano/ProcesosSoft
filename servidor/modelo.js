@@ -65,7 +65,10 @@ function Sistema() {
 
     // Autenticación de usuario utilizando Google
     this.usuarioGoogle = function (usr, callback) {
+      this.registrarLog("autenticarUsuarioGoogle", usr.email); // Registrar la actividad
+
         this.cad.buscarOCrearUsuario(usr, function (obj) {
+
             callback(obj);
         });
     }
@@ -164,6 +167,8 @@ this.loginUsuario = function (obj, callback) {
             console.log("code:", { codigo });
             this.partidas[codigo] = new Partida(codigo);
             this.partidas[codigo].jugadores.push(email); // Agregar el usuario que crea la partida
+            this.registrarLog("crearPartida", email); // Registrar la actividad
+
             return codigo;
         }
 
