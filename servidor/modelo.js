@@ -168,12 +168,14 @@ this.loginUsuario = function (obj, callback) {
         }
 
         this.unirAPartida = function(email, codigo) {
-          const partida = this.partidas[codigo];
+          let partida = this.partidas[codigo];
           if (partida && partida.jugadores.length < 2) {
               partida.jugadores.push(email);
-              console.log("Se pudo unir a la partida");
+              console.log("Se pudo unir a la partida",email);
+              this.registrarLog("unirAPartida", email); // Registrar la actividad
 
-              return true;
+              return {"codigo": codigo};
+
             } else {
                 console.log("No se pudo unir a la partida");
                 return false;
@@ -199,6 +201,23 @@ this.loginUsuario = function (obj, callback) {
       
           return lista.length > 0 ? lista : false;
       };
+
+
+
+      this.registrarLog = function(tipoOperacion, email){
+        console.log(email)
+        console.log("AQUIIII")
+          let log = {
+          "tipoOperacion": tipoOperacion,
+          "email": email,
+          "fecha-hora":new Date().toISOString()
+        };
+        this.cad.insertarLog(log,(res)=>{
+          console.log("Log registrado",res);
+        })
+
+
+      }
 
   }
 

@@ -41,7 +41,9 @@ function ControlWeb() {
         //let nick=localStorage.getItem("nick");
         let nick=$.cookie("nick");
         if (nick){
-        cw.mostrarMsg("Bienvenido al sistema, "+nick);
+        cw.mostrarMsg("Bienvenido al sistema3, "+nick);
+        ws.email = nick;
+
         }
         else{
         cw.mostrarRegistro();

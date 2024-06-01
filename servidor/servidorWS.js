@@ -15,18 +15,18 @@ function ServidorWS(io) {
             });
 
             socket.on('unirAPartida', (datos) => {
-                let email = datos.email;
-                let codigo = datos.codigo;
-                const res = sistema.unirAPartida(email, codigo);
-                if (res) {
-                    socket.join(codigo);
-                    this.enviarAlRemitente(socket, "unidoAPartida", { "email": email });
+                let res = sistema.unirAPartida(datos.email, datos.codigo);
+                if (res.codigo) {
+                    socket.join(res.codigo);
+                    this.enviarAlRemitente(socket, "unidoAPartida", { "email": datos.email });
                     let lista = sistema.partidasDisponibles();
                     this.enviarATodosMenosRemitente(socket, "listaPartidas", lista);
                 } else {
                     socket.emit('error', { message: 'No se pudo unir a la partida' });
                 }
             });
+            
+
             socket.on('disconnect', () => {
                 console.log('Cliente desconectado');
             });

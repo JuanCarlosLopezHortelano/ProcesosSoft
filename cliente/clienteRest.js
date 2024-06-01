@@ -6,9 +6,9 @@ function ClienteRest() {
         let msg="El nick "+nick+" está ocupado";
         if (data.nick!=-1){
         console.log("Usuario "+nick+" ha sido registrado");
-        msg="Bienvenido al sistema, "+nick;
+        msg="Bienvenido al sistema1, "+nick;
         $.cookie("nick", nick);
-
+        ws.email = nick
         
         }
         else{
@@ -88,20 +88,13 @@ function ClienteRest() {
 
 				if (data.nick!==-1){				
 					console.log("Usuario "+data.nick+" ha sido registrado");
-                    // mostrar un mensaje diciendo: consulta tu email
-					//$.cookie("nick",data.nick);
-					//cw.limpiar();
-                    console.log("POR111AQUII");
-					//cw.mostrarMensaje("Bienvenido al sistema, "+data.nick);
+                    
 					cw.mostrarLogin();
 				}
 				else{
-					console.log("El nick está ocupado");
                     cw.limpiar()
-                    cw.mostrarMsg("PRUEBAA "+data.nick);
 					cw.mostrarMsg("El nick está ocupado");
 
-                    console.log("Hay un usuario registrado con ese email");
                     cw.mostrarMsg("Hay un usuario registrado con ese email");
                     cw.mostrarModal("No se ha podido registrar el usuario");
                     
@@ -129,14 +122,18 @@ function ClienteRest() {
                 success: function(data) {
                     if (data.nick) {
                         console.log("Inicio de sesión exitoso para " + data.nick);
+
                         $.cookie("nick", data.nick);
+                        ws.email=data.nick;
+
                         cw.limpiar();
-                        cw.mostrarMsg("Bienvenido de nuevo, " + data.nick);
+                        cw.mostrarMsg("Datanick" + ws.email)
+                        cw.mostrarMsg("Datanick" + data.nick)
+                        cw.mostrarMsg("Bienvenido de nuevo22, " + data.nick);
                         cw.limpiar();
                         
                         cw.mostrarMenuPartidas();
                         console.log("AQUIIIIi")
-                        ws.email=data.email;
                         
 
                     } else {
@@ -175,10 +172,12 @@ this.enviarJwt=function(jwt){
             let msg="El nick "+nick+" está ocupado";
             if (data.nick!=-1){
                 console.log("Usuario "+data.nick+" ha sido registrado");
-                msg="Bienvenido al sistema, "+data.nick;
+                ws.email = data.nick;
+                msg="Bienvenido al sistemaaaa, " +ws.email;
                 $.cookie("nick",data.nick);
-                ws.email=data.email;
+                ws.email=data.nick;
 
+                
                 cw.limpiar();
                 cw.mostrarMsg(msg);
                 cw.limpiar();

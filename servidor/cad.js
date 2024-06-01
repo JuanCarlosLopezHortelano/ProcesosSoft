@@ -4,6 +4,9 @@ const ObjectId = require("mongodb").ObjectId;
 function CAD() {
 
     this.usuarios;
+    
+    this.logs;
+
 
     // Método para conectar a la base de datos
     this.conectar = async function (callback) {
@@ -12,6 +15,7 @@ function CAD() {
         await client.connect();
         const database = client.db("sistema");
         cad.usuarios = database.collection("usuarios");
+        cad.logs = database.collection("logs")
         callback(database);
     }
 
@@ -93,7 +97,12 @@ function CAD() {
                 callback({email:doc.value.email});
                 }
                 });
-                }    
+                }  
+                
+                
+    this.insertarLog = function(log,callback){
+        insertar(this.logs,log,callback)
+    }
 
 }
 // Exportamos el objeto CAD para su uso en otras partes de la aplicación
